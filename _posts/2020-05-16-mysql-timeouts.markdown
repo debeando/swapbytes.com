@@ -6,7 +6,7 @@ categories: MySQL
 published: true
 ---
 
-Suele pasar mucho con los de business intelligence, data science y sus variantes, puede deberse a varias razones, vamos al grano:
+Suele pasar mucho con los de **business intelligence, data science y sus variantes**, puede deberse a varias razones, vamos al grano:
 
 - Si te conectas desde tu casa u oficina al cloud para traer información, la realidad es que la intermitencia no la puedes controlar, puede ser por el ISP, o por la VPN o quien sabe que.
 - Volúmenes de datos muy grandes. Haz que la query retorne volúmenes más pequeños, en vez de todo el mes, que sea por día.
@@ -35,7 +35,7 @@ Las variables las puedes cambiar en su conexión / session de MySQL sin perjudic
 
 Adicionalmente, recomiendo hacer lecturas de datos sin generar bloqueos que pueda comprometer la replicación o una transacción entre otras cosas, para ello debes definir el nivel de aislamiento transaccional:
 
-```
+```sql
 SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 SELECT * FROM book WHERE year BETWEEN 2000 AND 2001;
 ```
