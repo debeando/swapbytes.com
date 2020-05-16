@@ -1,0 +1,6 @@
+# General Jekyll Config
+highlighter: rouge
+url: http://debeando.com
+lsi: false
+exclude: [CNAME, .gitignore, Gemfile, Gemfile.lock]
+incremental: true
