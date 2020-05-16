@@ -3,6 +3,7 @@ layout: post
 title:  "Monitorizar y resolver problemas de replicación en MySQL"
 date:   2016-03-05
 categories: MySQL
+tags: [mysql, replica, slave]
 ---
 
 La replicación de datos con slaves es algo muy fácil de configurar y aporta muchos beneficios, pero aveces trae sus grandes problemas si no tenemos en cuenta algunos aspectos de configuración, hardware y red entre otras cosas, vamos a comentar un buen grupo de ellos y ayudarte a saber donde puede estar el problema, se que es muy largo el POST, hay mucho que cubrir, pero tratare de dar la idea.

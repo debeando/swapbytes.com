@@ -4,6 +4,7 @@ title:  "El modelo Atributos & Tipos (EAV) o List of Values (LOV)"
 date:   2010-10-30
 categories: Base de Datos
 permalink: /modelo-atributos-tipos-eav-diseno-base-de-datos/
+tags: [database, model]
 ---
 
 Durante el diseño de un correcto modelo relacional de una base de datos, no cabe la duda la implementación de un modelo genérico de tablas llamado “Atributos & Tipos” u otros lo llaman (EAV, Entity Attribute Value) en sus siglas en ingles, el cual aumenta la flexibilidad y robustez del mismo.

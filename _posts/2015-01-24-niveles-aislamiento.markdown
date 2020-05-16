@@ -3,6 +3,7 @@ layout: post
 title:  "Niveles de aislamiento en Base de Datos"
 date:   2015-01-24
 categories: Base de Datos
+tags: [mysql,isolation]
 ---
 
 El aislamiento es una parte importante de la propiedad ACID que garantiza que las transacciones sean fiables. Esto permite que las transacciones que se ejecutan simultáneamente no interfieran con otras, **garantizando la integridad de los datos**, al no existir aislamiento en una transacción podría modificar los datos que otra transacción está leyendo, por lo que se crea una inconsistencia cuando se crean datos.

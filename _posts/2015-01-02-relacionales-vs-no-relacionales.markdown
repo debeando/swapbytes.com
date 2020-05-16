@@ -3,6 +3,7 @@ layout: post
 title:  "Bases de datos relacionales y no relacionales"
 date:   2015-01-24
 categories: Base de Datos
+tags: [database]
 ---
 
 El gran dilema, bases de datos relacionales ([RDBMS](http://en.wikipedia.org/wiki/Relational_database_management_system)) y no relacionales ([NoSQL](http://martinfowler.com/bliki/NosqlDefinition.html)), todos preguntan, todos hablan de ello, estamos comparando cual es mejor, en fin, hay una gran incertidumbre en el tema, muchos apuntan a un extremo o al otro, cometen errores y nos olvidamos de ver con objetividad. Quiero explicar de que va todo esto de una forma simple para entendernos. Quiero recordar que grandes volúmenes de datos no son un simple millón de rows, son mucho más, billones por ejemplo, ahora imagina billones de rows que interactúan con otros billones de rows para generar información más significativa, cuando hay grandes volúmenes de información se aprecia todo de una forma diferente, esto impacta en tiempo y dinero.

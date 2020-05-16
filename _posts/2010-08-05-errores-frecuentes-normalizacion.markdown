@@ -4,6 +4,7 @@ title:  "Errores frecuentes en la normalización de una Base de Datos"
 date:   2010-08-05
 categories: Base de Datos
 permalink: /normalizacion-base-de-datos-5-fallas-mas-frecuentes/
+tags: [database]
 ---
 
 En los trabajos que me e envuelto con base de datos, e visto un gran número de ellas, muchas echas por empresas pequeñas y medianas especializadas en el desarrollo, de cualquier sector; comercial, educativo o independientes, al final de todo, existe algo en común, y me llevo a una  conclusión, "**Será que NO tienen la mas mínima y remota idea de ¿Cómo hacer un modelo físico y aprovechar todas las bondades de un manejador de base de datos?**", y lo peor del caso, es que eso funciona milagrosamente y para ellos es indispensable toda su información *(obviamente)*, pero tienen un problema en común, **el sistema no funciona bien**, ¿Por qué será?

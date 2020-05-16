@@ -3,6 +3,7 @@ layout: post
 title:  "¿Por qué no debes usar relaciones polimórficas?"
 date:   2015-02-15
 categories: Base de Datos
+tags: [mysql]
 ---
 
 La verdad no se como empezar este post, ya que el tema es muy delicado en el mundo de RubyOnRails y algo en Java, no quiero ofender a la comunidad, sino ayudarlos hacer un buen modelo de datos dentro de un Manejador de Bases de Datos Relacionales ([RDBMS](http://en.wikipedia.org/wiki/Relational_database_management_system)). Considero que primero debemos enterarnos que son las relaciones polimórficas, luego hablar de los problemas que conlleva y por último como podemos evitarlos.

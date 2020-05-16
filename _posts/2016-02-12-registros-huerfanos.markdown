@@ -3,6 +3,7 @@ layout: post
 title:  "Buscar registros huérfanos"
 date:   2016-02-12
 categories: MySQL
+tags: [mysql]
 ---
 
 Los registros huérfanos son aquellos que se almacenan en un modelo relacional padre-hijo, los registros padres hacen referencia a filas primarias, y los registros hijos hacen referencia a filas secundarías, esto puede pasar por varias razones en una DDBB, básicamente sino existe claves foráneas definidas, o alguien desactivo de forma momentánea el check [foreign_key_checks][1], y para mantener la integridad de los datos debemos de vez en cuando identificar estos registros huérfanos, podríamos eliminarlos o asignarlos a un padre de forma provisional. Yo opto más por lo segundo, conservar los datos es nuestra prioridad.

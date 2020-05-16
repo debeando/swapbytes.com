@@ -3,6 +3,7 @@ layout: post
 title:  "Origen de la palabra NoSQL"
 date:   2015-06-08
 categories: Base de Datos
+tags: [database,nosql]
 ---
 
 Es curioso como se desencadena toda una revolución por un simple hashtag. Aquí les dejo una breve historia de su verdadero origen:

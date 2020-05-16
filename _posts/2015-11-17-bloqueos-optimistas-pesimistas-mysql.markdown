@@ -3,6 +3,7 @@ layout: post
 title:  "Bloqueos en MySQL"
 date:   2015-11-17
 categories: MySQL
+tags: [mysql]
 ---
 
 El bloqueo es la esencia de cualquier manejador de bases de datos relacional (RDBMS), para el caso de MySQL es importante destacar que el engine **InnoDB** lo gestiona de forma óptima, hasta la fecha no hay otro que lo haga mejor.

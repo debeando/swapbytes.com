@@ -4,6 +4,7 @@ title:  "Restaurar rápido un dump de MySQL"
 date:   2018-07-08
 categories: MySQL
 published: false
+tags: [mysql, dump]
 ---
 
 Hay situaciones que necesitan restaurar una Base de Datos de MySQL **rápido**, comento una serie de trucos que puede ayudar en ahorrarnos casi un 40% del tiempo. Lo divido en varios pasos.

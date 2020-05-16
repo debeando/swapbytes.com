@@ -3,6 +3,7 @@ layout: post
 title:  "Paginar en la consola de MySQL"
 date:   2015-01-01
 categories: MySQL
+tags: [mysql]
 ---
 
 Yo uso mucho la consola de MySQL, la verdad que es muy útil, pero muchas veces ejecutamos una Query que nos arroja un gran número de rows y columns que no caben en nuestra pantalla, y terminamos recurriendo a usar el scroll de la terminal para explorar los datos, ahora podemos implementar la paginación en la consola de una forma muy fácil.

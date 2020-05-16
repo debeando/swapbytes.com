@@ -4,6 +4,7 @@ title:  "MySQL y los Timeouts"
 date:   2020-05-15
 categories: MySQL
 published: true
+tags: [mysql, timeout]
 ---
 
 Suele pasar mucho con los de **business intelligence, data science y sus variantes**, puede deberse a varias razones, vamos al grano:

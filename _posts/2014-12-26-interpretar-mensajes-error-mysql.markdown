@@ -3,6 +3,7 @@ layout: post
 title:  "Interpretar los mensajes de error de MySQL"
 date:   2014-12-26
 categories: Base de Datos
+tags: [mysql, errors]
 ---
 
 Cuando trabajas en un equipo de desarrollo y eres responsable de la base de datos, te preguntan frecuentemente por los errores que van apareciendo y su posible relación con MySQL. De todo puede pasar, desde problemas de configuración, de conexión, de lógica y sintaxis, en fin... en estos casos hay que orientarlos y quiero explicarles de que va todo esto.

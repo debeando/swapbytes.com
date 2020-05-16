@@ -3,6 +3,7 @@ layout: post
 title:  "Eventos y bloqueo exclusivo"
 date:   2015-03-31
 categories: Base de Datos
+tags: [mysql,lock]
 ---
 
 Puede pasar que la ejecución de un procedimiento almacenado tarde más tiempo de lo previsto, y como hay un evento que lo ejecuta cada X tiempo, estos empiezan a verse amontonados en la lista de procesos, como podemos imaginar es muy malo. Afortunadamente MySQL tiene unas funciones que nos permite hacer un bloqueo exclusivo, así garantizamos que se ejecute solo uno a la vez.

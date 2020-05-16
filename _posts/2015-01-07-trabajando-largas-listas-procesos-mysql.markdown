@@ -3,6 +3,7 @@ layout: post
 title:  "Trabajando con largas listas de procesos en MySQL"
 date:   2015-01-07
 categories: MySQL
+tags: [mysql,process]
 ---
 
 Los fans de la terminal nos encontramos frecuentemente con algunas limitaciones por el tamaño del monitor y todo el contenido, en este caso hablo de listar y filtrar entre muchos rows en MySQL sin la opción WHERE como; **"SHOW PROCESSLIST;"** y **"SHOW TABLES;"**. Generalmente necesitamos buscar algo en largas listas para; matar procesos, verificar conexiones, consultas, etc... y como podemos hacer para mostrar los que nos interesa?.

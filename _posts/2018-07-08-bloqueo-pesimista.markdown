@@ -4,6 +4,7 @@ title:  "Ejemplo del bloqueo pesimista"
 date:   2018-07-08
 categories: MySQL
 published: false
+tags: [mysql,isolation,lock]
 ---
 
 El bloqueo pesimista es algo que **NO DEBEMOS USAR**, incluso su nombre lo deja muy claro, pero debemos **saber ¿porque?**, y la verdad es que es bastante interesante, hay que tener en cuenta varios detalles; el engine de la tabla debe ser InnoDB, toda **modificación** del registro se debe hacer dentro de una declaración de transacción (BEGIN / COMMIT), usar el nivel de aislamiento adecuado, y por último, recordar que cada transacción tiene un timeout, si abusamos del tiempo de espera se aborta la transacción.

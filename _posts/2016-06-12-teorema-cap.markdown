@@ -3,6 +3,7 @@ layout: post
 title:  "El teorema CAP"
 date:   2016-06-12
 categories: Base de Datos
+tags: [database]
 ---
 
 Éste post me parece muy importante para poder entender como funcionan y hacer grandes sistemas pensados para escalar, sea por tráfico, por multi-sitio, multi-país, y más… todos estos sistemas distribuidos presentan la misma particularidad, y en el año 2000 un señor llamado [Eric Brewer](https://en.wikipedia.org/wiki/CAP_theorem), pudo definir tres importantes propiedades y desarrollo un teorema. El se dio cuenta que mientras más aplicaciones basadas en la WEB existan, menos debemos preocuparnos por la consistencia de los datos, si queremos alta disponibilidad de nuestras aplicaciones entonces no podemos garantizar la consistencia de los datos.

@@ -3,6 +3,7 @@ layout: post
 title:  "Processes, Threads & Connections"
 date:   2015-02-15
 categories: Base de Datos
+tags: [mysql,conexion,process]
 ---
 
 Suele pasar mucho que nos confundimos con estos tres términos; procesos, hilos y conexiones (Processes, Threads & Connections), les quiero explicar un poco de que va cada uno y como están relacionados:

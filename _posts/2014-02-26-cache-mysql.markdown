@@ -4,6 +4,7 @@ title:  "¿Cómo funciona y se configura la Cache de MySQL?"
 date:   2014-02-26
 categories: Base de Datos
 permalink: /como-funciona-configura-cache-mysql/
+tags: [mysql, cache]
 ---
 
 Luego de mucho investigar y probar, me consigo que la cache de MySQL no es tan maravillosa como se cree, por lo que hay que probarla con algo de escepticismo y paciencia, en mi caso, resulta que en el Master puede ser perjudicial, y en los Slaves es beneficiosa.

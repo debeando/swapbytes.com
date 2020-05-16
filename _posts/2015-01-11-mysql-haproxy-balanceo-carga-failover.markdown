@@ -3,6 +3,7 @@ layout: post
 title:  "MySQL Balanceo de Carga & Failover con HAProxy"
 date:   2015-01-11
 categories: MySQL
+tags: [mysql,ha,proxysql]
 ---
 
 La Base de Datos es un servicio muy importante que debe estar operativo el 99.9999%, hay muchas arquitecturas para lograr esto, todo depende de las necesidades, hoy les explico la más básica usando un Master y dos Slaves con AWS y HAProxy.

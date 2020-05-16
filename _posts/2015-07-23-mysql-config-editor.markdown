@@ -3,6 +3,7 @@ layout: post
 title:  "Seguridad en MySQL con mysql_config_editor"
 date:   2015-07-23
 categories: MySQL
+tags: [mysql,cli]
 ---
 
 En la versión 5.6.6 se incluyo una nueva herramienta llamada [mysql_config_editor][1], la cual permite almacenar las credenciales de autenticación de una forma segura y otros datos básicos en un archivo llamado '.mylogin.cnf' en el directorio home del usuario, luego estas credenciales pueden ser recuperadas para conectarse al servidor de MySQL deseado.

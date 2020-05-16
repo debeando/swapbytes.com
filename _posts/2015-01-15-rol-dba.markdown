@@ -3,6 +3,7 @@ layout: post
 title:  "Rol de un DBA"
 date:   2015-01-14
 categories: Base de Datos
+tags: [database]
 ---
 
 Puede que este papel hoy en día se este perdiendo, y se haya mezclado con los de Operaciones o con algún Desarrollador, está mal!, en proyectos grandes es muy importante dedicarle todo el tiempo posible, llega un momento que el volumen de datos y el tráfico se vuelve insostenible, a este punto, **cuando algo falla es catastrófico y no suele arreglarse rápidamente**, la prevención es bastante crucial y se vuelve una eterna lucha.

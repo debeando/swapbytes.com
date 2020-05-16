@@ -3,6 +3,7 @@ layout: post
 title:  "Darle un poco de color a la consola de MySQL"
 date:   2015-01-13
 categories: Base de Datos
+tags: [mysql]
 ---
 
 Con el comando `grcat` de Linux podemos darle color al texto; números, direcciones IP, fechas, etc... así deja de ser aburrida la consola de MySQL.

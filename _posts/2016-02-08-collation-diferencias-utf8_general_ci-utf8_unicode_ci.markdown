@@ -3,6 +3,7 @@ layout: post
 title:  "Collation, diferencias entre utf8_general_ci y utf8_unicode_ci"
 date:   2016-02-08
 categories: MySQL
+tags: [mysql, collation]
 ---
 
 Para los que estamos acostumbrados a trabajar en Linux es normal usar el formato de codificación UTF-8, y en mi opinión personal es lo que se debería de usar para todo. En el caso de MySQL se puede definir en una base de datos, tabla y columna el formato de codificación como CHARSET y un sub formato llamado COLLATE. La intención del COLLATION es poder ayudar en la Presición vs Rendimiento con los carácteres especiales.

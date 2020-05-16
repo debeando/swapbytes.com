@@ -3,6 +3,7 @@ layout: post
 title:  "Actualizar datos de una tabla sin bloquearla desde un archivo"
 date:   2016-04-11
 categories: MySQL
+tags: [mysql, update, lock]
 ---
 
 Hay muchas formas de hacerlo, para variar quise buscar una alternativa rápida y eficaz para evitar escribir un nuevo script, y se me ocurrió usar los comandos de linux, la verdad que resulto muy bien, aquí les dejo un ejemplo:
