@@ -3,7 +3,7 @@ layout: post
 title:  "MySQL y los emojis"
 date:   2020-05-15
 categories: MySQL
-published: false
+published: true
 tags: [mysql, collation]
 ---
 
