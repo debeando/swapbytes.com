@@ -11,7 +11,7 @@ Esta es la típica tontería inútil que da problemas, veamos como se implementa
 
 - Debes utilizar el encoding `utf8mb4`.
 - El encoding debe estar configurado en varios sitios; en las tablas a usar, en la conexión de la aplicación y en las variables de entorno. En este punto es donde suele haber problemas.
-- Debes asegurarte que los datos se guardan y se recuperan bien.
+- Debes asegurarte de que los datos se guardan y se recuperan bien.
 - Realiza pruebas en un entorno seguro y controlado.
 
 Si ya estas utilizando el encoding `utf8` no es problema que implementes `utf8mb4`.
@@ -82,7 +82,7 @@ mysql> SELECT * FROM foo;
 mysql>
 ```
 
-Como puedes ver, usando el comando `SHOW WARNINGS` te lista los mensajes, aquí podemos observar no hay compatibilidad con el emoji y sobreescribe el valor de dicho emoji para hacerlo compatible al `CHARACTER_SET` actual, tambien pedes observar que hiciste `SELECT` del contenido de la tabla y no está el emoji sino una serie de simbolos,
+Como puedes ver, usando el comando `SHOW WARNINGS` te lista los mensajes, aquí podemos observar no hay compatibilidad con el emoji y sobre escribe el valor de dicho emoji para hacerlo compatible al `CHARACTER_SET` actual, también puedes observar que hiciste `SELECT` del contenido de la tabla y no está el emoji sino una serie de símbolos,
 
 ```SQL
 SELECT id, `text`, HEX(`text`) FROM foo WHERE id = 2;
@@ -123,7 +123,7 @@ Por ejemplo no usamos la sentencia `SHOW VARIABLES LIKE 'character%';` y su vari
 1 row in set (0.00 sec)
 ```
 
-Ya podemos ver que tenemos un desorden en las variables, toda una ensalada de opciones, deberiamos unificar el mayor número de opciones. Como hemos dicho, necesitamos tener definida la opción `utf8mb4`
+Ya podemos ver que tenemos un desorden en las variables, toda una ensalada de opciones, deberíamos unificar el mayor número de opciones. Como hemos dicho, necesitamos tener definida la opción `utf8mb4`
 
 Tampoco está demás verificar el collation de la tabla:
 
@@ -131,7 +131,7 @@ Tampoco está demás verificar el collation de la tabla:
 SELECT table_collation FROM information_schema.tables WHERE table_schema = 'demo' AND table_name = 'foo';
 ```
 
-Como la creamos nosotros desde el principio, y no te olvidaste de hacer el ALTER, seguramente todo está bien, ahora cambiamos la configuración en la session actual de la conexion y actualizamos el registro problematico y verificamos que todo está bien:
+Como la creamos nosotros desde el principio, y no te olvidaste de hacer el ALTER, seguramente todo está bien, ahora cambiamos la configuración en la sesión actual de la conexión y actualizamos el registro problemático y verificamos que todo está bien:
 
 
 ```SQL
@@ -139,7 +139,7 @@ SET character_set_client = 'utf8mb4'; SET character_set_connection = 'utf8mb4'; 
 UPDATE demo.foo SET `text` = "🚌" WHERE id = 1;
 ```
 
-Es muy importante que en la conexion de nuestro codigo que usa la base de datos y dicha tabla se le especifique el `CHARACTER_SET` para evitar algún problema, este es un ejemplo en python, consulta tu lenguaje y/o framework.
+Es muy importante que en la conexión de nuestro código que usa la base de datos y dicha tabla se le especifique el `CHARACTER_SET` para evitar algún problema, este es un ejemplo en python, consulta tu lenguaje y/o framework.
 
 <script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Fswapbyt3s%2FMyScripts%2Fblob%2Fmaster%2Fexamples%2Fpython%2Fmysql_emoji.py&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on"></script>
 
