@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeBeAndo - Seguridad en MySQL con mysql_config_editor</title>
+  <meta name="author" content="DeBeAndo" />
+  <meta name="description" content="DeBeAndo Blog" />
+  <link rel="canonical" href="http://0.0.0.0:4000/mysql-config-editor.html" />
+
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:600,800" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="alternate" type="application/atom+xml" title="DeBeAndo" href="http://0.0.0.0:4000/atom.xml" />
+
+  <link rel="stylesheet" href="/assets/css/all.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container">
+    <div class="four columns sidebar">
+      <nav>
+  <h1><a href="/">DeBeAndo</a></h1>
+  <a href="/">
+    <img src="/logo.png" id="logo" alt="logo"/>
+  </a>
+  <div id="social">
+    <div id="stalker">
+  
+  <a title="swapbyt3s on Github" href="https://github.com/swapbyt3s">
+    <i class="fa fa-github-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="debeando on Twitter" href="https://twitter.com/debeando">
+    <i class="fa fa-twitter-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="Atom feed" id="atom" href="/atom.xml">
+    <i class="fa fa-rss-square"></i>
+  </a>
+  
+</div>
+
+  </div>
+</nav>
+
+    </div>
+
+    <div class="eleven columns content">
+      <p class="meta">
+  July 23, 2015 
+  <a href="/">
+    <i class="home fa fa-home"></i>
+  </a>
+</p>
+
+<h1 class="title">Seguridad en MySQL con mysql_config_editor</h1>
+
+<div id="post">
+  <p>En la versión 5.6.6 se incluyo una nueva herramienta llamada <a href="http://dev.mysql.com/doc/refman/5.6/en/mysql-config-editor.html">mysql_config_editor</a>, la cual permite almacenar las credenciales de autenticación de una forma segura y otros datos básicos en un archivo llamado ‘.mylogin.cnf’ en el directorio home del usuario, luego estas credenciales pueden ser recuperadas para conectarse al servidor de MySQL deseado.</p>
+
+<p>A simple vista no parece, pero es muy importante que considere que <strong>el archivo ‘.mylogin.cnf’ no está cifrado</strong>, y no es completamente seguro, pero añade una capa más de seguridad ocultando los datos sensibles por la línea de comandos. Por ejemplo, ocultamos la contraseña en el; historial, alias, logs, scripts, etc… donde puede ser visible de muchas formas.</p>
+
+<p>En el siguiente ejemplo se muestra la forma tradicional de conectarse a una base de datos usando todos los parámetros básicos; host, usuario y clave:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>mysql <span class="nt">-h</span> production.db.empresa.org <span class="nt">-u</span> root <span class="nt">-pmypass</span>
+</code></pre></div></div>
+
+<p>Usando la nueva herramienta nos conectamos de la siguiente forma:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>mysql <span class="nt">--login-path</span><span class="o">=</span>production
+</code></pre></div></div>
+
+<p>Asumiendo que ya hemos creado la configuración ‘production’ usando la herramienta, podemos ver que estamos especificando con el parámetro ‘–login-path’ para que use la configuración ‘production’ y así conectarse al servidor.</p>
+
+<p>Para poder agregar una configuración, debemos ejecutar el siguiente comando:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql_config_editor <span class="nb">set</span> <span class="nt">--login-path</span><span class="o">=</span>production <span class="nt">--host</span><span class="o">=</span>production.db.empresa.org <span class="nt">--user</span><span class="o">=</span>root <span class="nt">-p</span>
+</code></pre></div></div>
+
+<p>La contraseña no se puede pasar por línea de comando, debemos escribirla para mantenerla un poco más segura. Si queremos conocer todas las configuraciones disponibles, solo debemos ejecutar el siguiente comando:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql_config_editor print <span class="nt">--all</span>
+</code></pre></div></div>
+
+<p>Si queremos aprender más sobre esta herramienta, recomiendo <a href="http://dev.mysql.com/doc/refman/5.6/en/mysql-config-editor.html">visitar su página web</a>.</p>
+
+
+</div>
+
+<div id="related">
+  <h3>Related Posts</h3>
+  <ul class="posts">
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-emojis.html">MySQL y los emojis</a>
+    </li>
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-timeouts.html">MySQL y los Timeouts</a>
+    </li>
+    
+    <li>
+      <span>12 Jun 2016 &raquo;</span> <a href="/teorema-cap.html">El teorema CAP</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      <div class="footer">
+        <div class="disclaimer">
+  
+  <p>
+    © DeBeAndo, 2020
+  </p>
+</div>
+      </div>
+    </div>
+  </div>
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17220206-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+</body>
+</html>

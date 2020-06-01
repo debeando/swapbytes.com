@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeBeAndo - Eventos y bloqueo exclusivo</title>
+  <meta name="author" content="DeBeAndo" />
+  <meta name="description" content="DeBeAndo Blog" />
+  <link rel="canonical" href="http://0.0.0.0:4000/eventos-y-bloqueo-exclusivo.html" />
+
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:600,800" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="alternate" type="application/atom+xml" title="DeBeAndo" href="http://0.0.0.0:4000/atom.xml" />
+
+  <link rel="stylesheet" href="/assets/css/all.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container">
+    <div class="four columns sidebar">
+      <nav>
+  <h1><a href="/">DeBeAndo</a></h1>
+  <a href="/">
+    <img src="/logo.png" id="logo" alt="logo"/>
+  </a>
+  <div id="social">
+    <div id="stalker">
+  
+  <a title="swapbyt3s on Github" href="https://github.com/swapbyt3s">
+    <i class="fa fa-github-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="debeando on Twitter" href="https://twitter.com/debeando">
+    <i class="fa fa-twitter-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="Atom feed" id="atom" href="/atom.xml">
+    <i class="fa fa-rss-square"></i>
+  </a>
+  
+</div>
+
+  </div>
+</nav>
+
+    </div>
+
+    <div class="eleven columns content">
+      <p class="meta">
+  March 31, 2015 
+  <a href="/">
+    <i class="home fa fa-home"></i>
+  </a>
+</p>
+
+<h1 class="title">Eventos y bloqueo exclusivo</h1>
+
+<div id="post">
+  <p>Puede pasar que la ejecución de un procedimiento almacenado tarde más tiempo de lo previsto, y como hay un evento que lo ejecuta cada X tiempo, estos empiezan a verse amontonados en la lista de procesos, como podemos imaginar es muy malo. Afortunadamente MySQL tiene unas funciones que nos permite hacer un bloqueo exclusivo, así garantizamos que se ejecute solo uno a la vez.</p>
+
+<p>En el siguiente ejemplo, tenemos un evento que se ejecuta cada 1 segundo y llama a un procedimiento almacenado que tarda 5 segundos en ejecutarse. Lo ideal de este caso, es que podremos observar en la lista de procesos 5 eventos ejecutando al mismo tiempo.</p>
+
+<pre><code class="language-SQL">DELIMITER |
+CREATE PROCEDURE sp_wait()
+BEGIN
+    SELECT SLEEP(5);
+END|
+DELIMITER ;
+
+DROP EVENT IF EXISTS ev_wait;
+DELIMITER |
+CREATE EVENT ev_wait ON SCHEDULE EVERY 1 SECOND DO
+BEGIN
+  CALL sp_wait();
+END|
+DELIMITER ;
+</code></pre>
+
+<p>Una vez creado el procedimiento almacenado y el evento, ya podremos observar como se amontonan en la lista de procesos usando el comando “SHOW PROCESSLIST;”:</p>
+
+<p><img src="http://0.0.0.0:4000/event_lock1.png" alt="Lock Example 1" /></p>
+
+<p>La solución es muy simple, vamos a implementar dos funciones; <a href="http://dev.mysql.com/doc/refman/5.6/en/miscellaneous-functions.html#function_get-lock" target="_blank">GET_LOCK</a> y <a href="http://dev.mysql.com/doc/refman/5.6/en/miscellaneous-functions.html#function_release-lock" target="_blank">RELEASE_LOCK</a> para hacer el bloqueo exclusivo, en el ejemplo siguiente podemos ver como lo implementamos:</p>
+
+<pre><code class="language-SQL">DROP EVENT IF EXISTS ev_wait;
+DELIMITER |
+CREATE EVENT ev_wait ON SCHEDULE EVERY 1 SECOND DO
+BEGIN
+  SELECT GET_LOCK('temp.sp_wait', 0) INTO @got_lock;
+
+  IF @got_lock = 1 THEN
+    CALL sp_wait();
+
+    SELECT RELEASE_LOCK('temp.sp_wait');
+  END IF;
+END|
+DELIMITER ;
+</code></pre>
+
+<p>Ahora podremos observar en la lista de procesos que siempre hay un único proceso en ejecución y no 5 como antes:</p>
+
+<p><img src="http://0.0.0.0:4000/event_lock2.png" alt="Lock Example 2" /></p>
+
+</div>
+
+<div id="related">
+  <h3>Related Posts</h3>
+  <ul class="posts">
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-emojis.html">MySQL y los emojis</a>
+    </li>
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-timeouts.html">MySQL y los Timeouts</a>
+    </li>
+    
+    <li>
+      <span>12 Jun 2016 &raquo;</span> <a href="/teorema-cap.html">El teorema CAP</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      <div class="footer">
+        <div class="disclaimer">
+  
+  <p>
+    © DeBeAndo, 2020
+  </p>
+</div>
+      </div>
+    </div>
+  </div>
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17220206-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+</body>
+</html>

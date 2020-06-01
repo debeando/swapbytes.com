@@ -118,6 +118,7 @@ nav h1, nav h2 {
 #social {
   margin-bottom: 10px;
   font-size: 13px;
+  text-align: center;
 }
 
 #post pre {

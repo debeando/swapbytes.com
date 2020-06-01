@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeBeAndo - ¿Por qué no debes usar relaciones polimórficas?</title>
+  <meta name="author" content="DeBeAndo" />
+  <meta name="description" content="DeBeAndo Blog" />
+  <link rel="canonical" href="http://0.0.0.0:4000/relaciones-polimorficas.html" />
+
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:600,800" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="alternate" type="application/atom+xml" title="DeBeAndo" href="http://0.0.0.0:4000/atom.xml" />
+
+  <link rel="stylesheet" href="/assets/css/all.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container">
+    <div class="four columns sidebar">
+      <nav>
+  <h1><a href="/">DeBeAndo</a></h1>
+  <a href="/">
+    <img src="/logo.png" id="logo" alt="logo"/>
+  </a>
+  <div id="social">
+    <div id="stalker">
+  
+  <a title="swapbyt3s on Github" href="https://github.com/swapbyt3s">
+    <i class="fa fa-github-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="debeando on Twitter" href="https://twitter.com/debeando">
+    <i class="fa fa-twitter-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="Atom feed" id="atom" href="/atom.xml">
+    <i class="fa fa-rss-square"></i>
+  </a>
+  
+</div>
+
+  </div>
+</nav>
+
+    </div>
+
+    <div class="eleven columns content">
+      <p class="meta">
+  February 15, 2015 
+  <a href="/">
+    <i class="home fa fa-home"></i>
+  </a>
+</p>
+
+<h1 class="title">¿Por qué no debes usar relaciones polimórficas?</h1>
+
+<div id="post">
+  <p>La verdad no se como empezar este post, ya que el tema es muy delicado en el mundo de RubyOnRails y algo en Java, no quiero ofender a la comunidad, sino ayudarlos hacer un buen modelo de datos dentro de un Manejador de Bases de Datos Relacionales (<a href="http://en.wikipedia.org/wiki/Relational_database_management_system">RDBMS</a>). Considero que primero debemos enterarnos que son las relaciones polimórficas, luego hablar de los problemas que conlleva y por último como podemos evitarlos.</p>
+
+<h2 id="qué-son-las-relaciones-polimórficas">¿Qué son las relaciones polimórficas?</h2>
+
+<p>Es una forma de relacionar muchas tablas con una sola mediante una única relación, esto se debe que programamos orientado a objetos y tratamos la base de datos de la misma forma, creando relaciones entre objetos, es una implementación de la librería (gema) ActiveRecord que compone el framework RubyOnRails. Depende del enfoque, esto nos puede traer un ahorro en el uso de tablas como mayor complicación del código.</p>
+
+<p><img src="http://0.0.0.0:4000/assets/PolymorphismRelationship01.png" alt="DBA" /></p>
+
+<p>Como vemos en el modelo anterior, explica un caso hipotético de que una imagen puede estar relacionada con uno o varios productos y/o empleados.</p>
+
+<h2 id="el-problema">El problema</h2>
+
+<p>La razón es muy simple, hasta el día de hoy <strong>NO hay un Manejador de Bases de Datos Relacionales que tenga un una restricción de integridad referencial para las relaciones polimórficas</strong>, y en el álgebra relacional no existe forma de representarlo. El día que uses MySQL u otro para tus cosas y tenga implementado esta funcionalidad y sea un software seguro, no habrá ningún problema.</p>
+
+<p>Por otro lado, se crea una discusión ideológica llamada <a href="http://en.wikipedia.org/wiki/Object-relational_impedance_mismatch">Object-relational impedance mismatch</a> que es bastante interesante.</p>
+
+<p>Al no existir una restricción que soporte este tipo de invento, nos encontramos con una <strong>serie de inconvenientes</strong> técnicos:</p>
+
+<p>Se presenta una <strong>inconsistencia de datos</strong> porque no puede gestionarlos el RDBMS, y se tiende a delegar en la aplicación. El problema es que la aplicación se ejecuta en varios servidores, y los <strong>datos terminan en la base de datos quien tiene la última palabra si es valido o no</strong>, mientras que los servidores de aplicaciones por la concurrencia trabajan de forma aislada. Éste es uno de los típicos argumentos cuando no hay relaciones definidas dentro del RDBMS.</p>
+
+<p>Por otro lado, las consultas se hacen más complicadas y difícil de mantener, porque puede que necesitemos <strong>consultas diferentes dependiendo del ROW</strong>, muestro un simple ejemplo:</p>
+
+<pre><code class="language-SQL">SELECT *
+FROM purchases p
+LEFT OUTER JOIN shoes s ON s.id = p.item_id AND p.item_type = 'Shoe'
+LEFT OUTER JOIN bags  b ON b.id = p.item_id AND p.item_type = 'Bag'
+WHERE p.id = 1;
+</code></pre>
+
+<p>Como vemos en la consulta anterior, debemos hacer LEFT OUTER JOIN por cada tabla “relacionada” para obtener una lista de todos los productos comprados, se puede simplificar mucho si usamos la siguiente forma:</p>
+
+<pre><code class="language-SQL">SELECT *
+FROM purchases p
+JOIN items i ON i.id = p.item_id
+WHERE e.id = 1;
+</code></pre>
+
+<p>Para poder distinguir si nuestro item es un Zapato o un Bolso u otra cosa, simplemente podemos implementar atributos, o ir más allá y usar <a href="https://www.swapbytes.com/modelo-atributos-tipos-eav-diseno-base-de-datos">EAV</a>.</p>
+
+<p>Por otro lado, a nivel de programación puede ser que sea mucho más simple, porque podemos usar una misma línea para buscar en muchas otras tablas, mientras con la forma tradicional de hacer relaciones puede dependiendo del caso generar más líneas de código.</p>
+
+<h2 id="la-solución">La solución</h2>
+
+<p>Siempre hay una forma de hacerlo bien, vamos a usar el ejemplo anterior, podemos resolverlo de varias formas, siendo la segunda la mejor alternativas.</p>
+
+<ul>
+  <li>Creamos una columna en la tabla pictures por cada tabla relacionada (employee_id y product_id).</li>
+  <li>Creamos una columna (picture_id) en las tablas employees y products que se relaciona con la tabla pictures.</li>
+</ul>
+
+<p>Quiero mostrar varios ejemplos, el primero sería una consulta SQL usando relaciones polimórficas, y el segundo ejemplo es usando la forma correcta de normalización:</p>
+
+<pre><code class="language-SQL">SELECT *
+FROM employees e
+JOIN pictures p ON p.imageable_id = e.id AND p.imageable_type = 'Employee'
+WHERE e.id = 1;
+</code></pre>
+
+<p>Como podemos observar la consulta es mucho más compleja por tener una condición más que evaluar.</p>
+
+<pre><code class="language-SQL">SELECT *
+FROM employees e
+JOIN pictures p ON p.id = e.picture_id
+WHERE e.id = 1;
+</code></pre>
+
+<p>En este caso es la representación correcta por un correcto modelo de datos. Una consulta SQL mucho más simple.</p>
+
+<h2 id="conclusión">Conclusión</h2>
+
+<p>Hay mucha información por Internet con las practicas más idóneas, dejo algunos ejemplos:</p>
+
+<ul>
+  <li><a href="http://www.slideshare.net/billkarwin/practical-object-oriented-models-in-sql">Practical Object Oriented Models In Sql</a></li>
+  <li><a href="http://stackoverflow.com/questions/441001/possible-to-do-a-mysql-foreign-key-to-one-of-two-possible-tables">Possible to do a MySQL foreign key to one of two possible tables?</a></li>
+</ul>
+
+<p>Desde el punto de vista del desarrollador puede ser ventajoso, pero es un gran problema para la base de datos por romper la integridad, complejidad del mododelo y menor flexibilidad, debemos pensar en función de la calidad de nuestros datos y del producto que estamos ofreciendo. Esto me recuerda que <strong>“si alimentamos nuestro sistema con datos basura, los procesamos, y obtendremos datos basura”</strong>. No queremos esto verdad?</p>
+
+</div>
+
+<div id="related">
+  <h3>Related Posts</h3>
+  <ul class="posts">
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-emojis.html">MySQL y los emojis</a>
+    </li>
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-timeouts.html">MySQL y los Timeouts</a>
+    </li>
+    
+    <li>
+      <span>12 Jun 2016 &raquo;</span> <a href="/teorema-cap.html">El teorema CAP</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      <div class="footer">
+        <div class="disclaimer">
+  
+  <p>
+    © DeBeAndo, 2020
+  </p>
+</div>
+      </div>
+    </div>
+  </div>
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17220206-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+</body>
+</html>

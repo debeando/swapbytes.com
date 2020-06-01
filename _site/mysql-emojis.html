@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeBeAndo - MySQL y los emojis</title>
+  <meta name="author" content="DeBeAndo" />
+  <meta name="description" content="DeBeAndo Blog" />
+  <link rel="canonical" href="http://0.0.0.0:4000/mysql-emojis.html" />
+
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:600,800" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="alternate" type="application/atom+xml" title="DeBeAndo" href="http://0.0.0.0:4000/atom.xml" />
+
+  <link rel="stylesheet" href="/assets/css/all.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container">
+    <div class="four columns sidebar">
+      <nav>
+  <h1><a href="/">DeBeAndo</a></h1>
+  <a href="/">
+    <img src="/logo.png" id="logo" alt="logo"/>
+  </a>
+  <div id="social">
+    <div id="stalker">
+  
+  <a title="swapbyt3s on Github" href="https://github.com/swapbyt3s">
+    <i class="fa fa-github-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="debeando on Twitter" href="https://twitter.com/debeando">
+    <i class="fa fa-twitter-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="Atom feed" id="atom" href="/atom.xml">
+    <i class="fa fa-rss-square"></i>
+  </a>
+  
+</div>
+
+  </div>
+</nav>
+
+    </div>
+
+    <div class="eleven columns content">
+      <p class="meta">
+  May 18, 2020 
+  <a href="/">
+    <i class="home fa fa-home"></i>
+  </a>
+</p>
+
+<h1 class="title">MySQL y los emojis</h1>
+
+<div id="post">
+  <p>Esta es la típica tontería inútil que da problemas, veamos como se implementa y donde puede haber problemas, al grano, vemos todo lo que hace falta para que funcione, y los ejemplos que trataremos están hechos para saber investigar el problema y poder resolverlo:</p>
+
+<ul>
+  <li>Debes utilizar el encoding <code class="highlighter-rouge">utf8mb4</code>.</li>
+  <li>El encoding debe estar configurado en varios sitios; en las tablas a usar, en la conexión de la aplicación y en las variables de entorno. En este punto es donde suele haber problemas.</li>
+  <li>Debes asegurarte de que los datos se guardan y se recuperan bien.</li>
+  <li>Realiza pruebas en un entorno seguro y controlado.</li>
+</ul>
+
+<p>Si ya estas utilizando el encoding <code class="highlighter-rouge">utf8</code> no es problema que implementes <code class="highlighter-rouge">utf8mb4</code>.</p>
+
+<p>Vamos a crear primero una tabla como debe ser, luego modificar una tabla existente y luego agregamos varios registros de ejemplo:</p>
+
+<pre><code class="language-SQL">DROP TABLE IF EXISTS foo;
+CREATE TABLE IF NOT EXISTS `foo` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `text` varchar(2000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO foo (`text`) VALUES ("test case");
+INSERT INTO foo (`text`) VALUES ("🚌");
+</code></pre>
+
+<p>Podemos modificar una tabla existente para que use <code class="highlighter-rouge">utf8mb4</code>, en el ejemplo pongo como crear la tabla y luego como modificarla:</p>
+
+<pre><code class="language-SQL">DROP TABLE IF EXISTS foo;
+CREATE TABLE IF NOT EXISTS `foo` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `text` varchar(2000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE foo CONVERT TO CHARACTER SET utf8mb4;
+</code></pre>
+
+<p><strong>ADVERTENCIA:</strong> Cuidado con el tamano de la tabla a la hora de modificarla, y el encoding diferente al <code class="highlighter-rouge">utf8</code>.</p>
+
+<p>Ahora insertamos varios registros y vemos que pasa:</p>
+
+<pre><code class="language-SQL">INSERT INTO foo (`text`) VALUES ("test case");
+INSERT INTO foo (`text`) VALUES ("🚌");
+</code></pre>
+
+<p>Posiblemente se te genere la siguiente salida, donde el primer registro se agrego perfectamente pero en el segundo registro tienes <strong>2 warnings</strong>, hay que prestar mucho a esa información que suele ser ignorada.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; INSERT INTO foo (`text`) VALUES ("test case");
+Query OK, 1 row affected (0.01 sec)
+
+mysql&gt; INSERT INTO foo (`text`) VALUES ("🚌");
+Query OK, 1 row affected, 2 warnings (0.01 sec)
+
+mysql&gt; SHOW WARNINGS;
++---------+------+-----------------------------------------------------------------------+
+| Level   | Code | Message                                                               |
++---------+------+-----------------------------------------------------------------------+
+| Warning | 1300 | Invalid utf8 character string: 'F09F9A'                               |
+| Warning | 1366 | Incorrect string value: '\xF0\x9F\x9A\x8C' for column 'text' at row 1 |
++---------+------+-----------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql&gt; SELECT * FROM foo;
++----+-----------+
+| id | text      |
++----+-----------+
+|  1 | test case |
+|  2 | ????      |
++----+-----------+
+2 rows in set (0.00 sec)
+
+mysql&gt;
+</code></pre></div></div>
+
+<p>Como puedes ver, usando el comando <code class="highlighter-rouge">SHOW WARNINGS</code> te lista los mensajes, aquí podemos observar no hay compatibilidad con el emoji y sobre escribe el valor de dicho emoji para hacerlo compatible al <code class="highlighter-rouge">CHARACTER_SET</code> actual, también puedes observar que hiciste <code class="highlighter-rouge">SELECT</code> del contenido de la tabla y no está el emoji sino una serie de símbolos,</p>
+
+<pre><code class="language-SQL">SELECT id, `text`, HEX(`text`) FROM foo WHERE id = 2;
+SELECT HEX("🚌");
+</code></pre>
+
+<p>Es cierto que se creo antes la tabla con el soporte a <code class="highlighter-rouge">utf8mb4</code> y aún así esta dando problemas, debemos revisar las variables del servidor relacionadas a este tipo de configuración, posiblemente nos falta algo, hagamos la siguiente consulta para averiguarlo:</p>
+
+<pre><code class="language-SQL">SELECT @@collation_connection,
+       @@collation_database,
+       @@collation_server,
+       @@character_set_client,
+       @@character_set_connection,
+       @@character_set_database,
+       @@character_set_filesystem,
+       @@character_set_results,
+       @@character_set_server,
+       @@character_set_system,
+       @@init_connect\G
+</code></pre>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Por ejemplo no usamos la sentencia <code class="highlighter-rouge">SHOW VARIABLES LIKE 'character%';</code> y su variante porque debes ejecutarla por cada tipo de variables [collation</td>
+      <td>character] o una variable en específico, es cosa tuya. De la query anterior posiblemente obtengamos el siguiente resultado:</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>*************************** 1. row ***************************
+    @@collation_connection: utf8_general_ci
+      @@collation_database: latin1_swedish_ci
+        @@collation_server: latin1_swedish_ci
+    @@character_set_client: utf8
+@@character_set_connection: utf8
+  @@character_set_database: latin1
+@@character_set_filesystem: binary
+   @@character_set_results: utf8
+    @@character_set_server: latin1
+    @@character_set_system: utf8
+            @@init_connect:
+1 row in set (0.00 sec)
+</code></pre></div></div>
+
+<p>Ya podemos ver que tenemos un desorden en las variables, toda una ensalada de opciones, deberíamos unificar el mayor número de opciones. Como hemos dicho, necesitamos tener definida la opción <code class="highlighter-rouge">utf8mb4</code></p>
+
+<p>Tampoco está demás verificar el collation de la tabla:</p>
+
+<pre><code class="language-SQL">SELECT table_collation FROM information_schema.tables WHERE table_schema = 'demo' AND table_name = 'foo';
+</code></pre>
+
+<p>Como la creamos nosotros desde el principio, y no te olvidaste de hacer el ALTER, seguramente todo está bien, ahora cambiamos la configuración en la sesión actual de la conexión y actualizamos el registro problemático y verificamos que todo está bien:</p>
+
+<pre><code class="language-SQL">SET character_set_client = 'utf8mb4'; SET character_set_connection = 'utf8mb4'; SET character_set_results = 'utf8mb4';
+UPDATE demo.foo SET `text` = "🚌" WHERE id = 1;
+</code></pre>
+
+<p>Es muy importante que en la conexión de nuestro código que usa la base de datos y dicha tabla se le especifique el <code class="highlighter-rouge">CHARACTER_SET</code> para evitar algún problema, este es un ejemplo en python, consulta tu lenguaje y/o framework.</p>
+
+<script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Fswapbyt3s%2FMyScripts%2Fblob%2Fmaster%2Fexamples%2Fpython%2Fmysql_emoji.py&amp;style=github&amp;showBorder=on&amp;showLineNumbers=on&amp;showFileMeta=on"></script>
+
+<p>Fin.</p>
+
+</div>
+
+<div id="related">
+  <h3>Related Posts</h3>
+  <ul class="posts">
+    
+    <li>
+      <span>16 May 2020 &raquo;</span> <a href="/mysql-timeouts.html">MySQL y los Timeouts</a>
+    </li>
+    
+    <li>
+      <span>12 Jun 2016 &raquo;</span> <a href="/teorema-cap.html">El teorema CAP</a>
+    </li>
+    
+    <li>
+      <span>11 Apr 2016 &raquo;</span> <a href="/actualizar-bloquearla.html">Actualizar datos de una tabla sin bloquearla desde un archivo</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      <div class="footer">
+        <div class="disclaimer">
+  
+  <p>
+    © DeBeAndo, 2020
+  </p>
+</div>
+      </div>
+    </div>
+  </div>
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17220206-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "MySQL y los Timeouts"
-date:   2020-05-15
+date:   2020-05-16
 categories: MySQL
 published: true
 tags: [mysql, timeout]

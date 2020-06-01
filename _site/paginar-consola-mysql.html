@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeBeAndo - Paginar en la consola de MySQL</title>
+  <meta name="author" content="DeBeAndo" />
+  <meta name="description" content="DeBeAndo Blog" />
+  <link rel="canonical" href="http://0.0.0.0:4000/paginar-consola-mysql.html" />
+
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:600,800" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="alternate" type="application/atom+xml" title="DeBeAndo" href="http://0.0.0.0:4000/atom.xml" />
+
+  <link rel="stylesheet" href="/assets/css/all.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container">
+    <div class="four columns sidebar">
+      <nav>
+  <h1><a href="/">DeBeAndo</a></h1>
+  <a href="/">
+    <img src="/logo.png" id="logo" alt="logo"/>
+  </a>
+  <div id="social">
+    <div id="stalker">
+  
+  <a title="swapbyt3s on Github" href="https://github.com/swapbyt3s">
+    <i class="fa fa-github-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="debeando on Twitter" href="https://twitter.com/debeando">
+    <i class="fa fa-twitter-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="Atom feed" id="atom" href="/atom.xml">
+    <i class="fa fa-rss-square"></i>
+  </a>
+  
+</div>
+
+  </div>
+</nav>
+
+    </div>
+
+    <div class="eleven columns content">
+      <p class="meta">
+  January 01, 2015 
+  <a href="/">
+    <i class="home fa fa-home"></i>
+  </a>
+</p>
+
+<h1 class="title">Paginar en la consola de MySQL</h1>
+
+<div id="post">
+  <p>Yo uso mucho la consola de MySQL, la verdad que es muy útil, pero muchas veces ejecutamos una Query que nos arroja un gran número de rows y columns que no caben en nuestra pantalla, y terminamos recurriendo a usar el scroll de la terminal para explorar los datos, ahora podemos implementar la paginación en la consola de una forma muy fácil.</p>
+
+<p>Solo debemos editar o modificar un fichero de configuración, el que usa <a href="http://dev.mysql.com/doc/refman/5.6/en/mysql.html">MySQL Command Line</a>, manos a la obra:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim ~/.my.cnf
+</code></pre></div></div>
+
+<p>Agregamos estas líneas al final:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pager = less -RSFXin
+</code></pre></div></div>
+
+<p>Debe quedar así:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql]
+user = root
+pager = less -RSFXin
+</code></pre></div></div>
+
+<p>Podemos observar que hay un parámetro de configuración llamado <strong>pager</strong> que se encarga de pasar por STDOUT los datos a otro programa de la terminal de Linux para que haga su magia, en este caso usamos el comando <strong>less</strong> para paginar el resultado que es retornado por STDIN.</p>
+
+</div>
+
+<div id="related">
+  <h3>Related Posts</h3>
+  <ul class="posts">
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-emojis.html">MySQL y los emojis</a>
+    </li>
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-timeouts.html">MySQL y los Timeouts</a>
+    </li>
+    
+    <li>
+      <span>12 Jun 2016 &raquo;</span> <a href="/teorema-cap.html">El teorema CAP</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      <div class="footer">
+        <div class="disclaimer">
+  
+  <p>
+    © DeBeAndo, 2020
+  </p>
+</div>
+      </div>
+    </div>
+  </div>
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17220206-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+</body>
+</html>

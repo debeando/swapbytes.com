@@ -4,3 +4,11 @@ url: http://debeando.com
 lsi: false
 exclude: [CNAME, .gitignore, Gemfile, Gemfile.lock]
 incremental: true
+permalink: /:title:output_ext
+plugins:
+  - jekyll-feed
+feed:
+  path: atom.xml
+exclude:
+  - "README.md"
+  - "vendor"

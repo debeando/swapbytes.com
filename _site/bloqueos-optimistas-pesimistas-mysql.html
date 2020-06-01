@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeBeAndo - Bloqueos en MySQL</title>
+  <meta name="author" content="DeBeAndo" />
+  <meta name="description" content="DeBeAndo Blog" />
+  <link rel="canonical" href="http://0.0.0.0:4000/bloqueos-optimistas-pesimistas-mysql.html" />
+
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:600,800" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="alternate" type="application/atom+xml" title="DeBeAndo" href="http://0.0.0.0:4000/atom.xml" />
+
+  <link rel="stylesheet" href="/assets/css/all.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container">
+    <div class="four columns sidebar">
+      <nav>
+  <h1><a href="/">DeBeAndo</a></h1>
+  <a href="/">
+    <img src="/logo.png" id="logo" alt="logo"/>
+  </a>
+  <div id="social">
+    <div id="stalker">
+  
+  <a title="swapbyt3s on Github" href="https://github.com/swapbyt3s">
+    <i class="fa fa-github-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="debeando on Twitter" href="https://twitter.com/debeando">
+    <i class="fa fa-twitter-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="Atom feed" id="atom" href="/atom.xml">
+    <i class="fa fa-rss-square"></i>
+  </a>
+  
+</div>
+
+  </div>
+</nav>
+
+    </div>
+
+    <div class="eleven columns content">
+      <p class="meta">
+  November 17, 2015 
+  <a href="/">
+    <i class="home fa fa-home"></i>
+  </a>
+</p>
+
+<h1 class="title">Bloqueos en MySQL</h1>
+
+<div id="post">
+  <p>El bloqueo es la esencia de cualquier manejador de bases de datos relacional (RDBMS), para el caso de MySQL es importante destacar que el engine <strong>InnoDB</strong> lo gestiona de forma óptima, hasta la fecha no hay otro que lo haga mejor.</p>
+
+<p>No podemos confundir bloqueos con <a href="https://www.swapbytes.com/niveles-aislamiento-base-de-datos/">niveles de aislamiento</a>, ya que el bloqueo se hace a nivel de registros usando una instrucción específica, mientras el nivel de aislamiento es el comportamiento por defecto para cualquier otra instrucción normal que manipule los registros.</p>
+
+<p>Los bloqueos existen para poder garantizar el <a href="https://en.wikipedia.org/wiki/ACID">ACID</a>, su correcta implementación permite que halla <strong>concurrencia</strong>, de lo contrario se puede presentar la <strong>contención</strong> y es fatal.</p>
+
+<p>Los bloqueos los podemos dividir en dos grandes grupos; está el bloqueo pesimista y el bloqueo optimista, vamos a entender cada uno:</p>
+
+<ul>
+  <li><strong>Pesimista:</strong> Es aquel que se apodera del recurso (row/tabla) y no lo libera hasta que se haya modificado. Generalmente se hace con instrucciones propias del RDBMS. Para el caso de MySQL tenemos dos instrucciones; el <a href="http://dev.mysql.com/doc/refman/5.7/en/innodb-locking-reads.html">SELECT … FOR UPDATE y el SELECT … LOCK IN SHARE MODE</a> y no hablar de <a href="http://dev.mysql.com/doc/refman/5.7/en/lock-tables.html">LOCK TABLE</a>. Éste tipo de bloqueo produce <a href="https://en.wikipedia.org/wiki/Deadlock">Deadlock</a> sin importar la forma como lo controlemos, al final estamos bloqueando un recurso que usa una conexión especifica, tiene un timeout, y otros procesos que esperan por el, esto puede generar una contención, problemas de atomicidad, y muchas más situaciones lamentables.</li>
+  <li><strong>Optimista:</strong> Es la mejor forma de bloquear un recurso fomentando la concurrencia, no existe instrucción SQL que añada ésta funcionalidad, más bien usamos las instrucciones DML existentes, y se basa en la lógica del <a href="https://es.wikipedia.org/wiki/Multiversion_concurrency_control">MVCC</a>. Consiste en añadir una columna para versionar el registro y evitar que el último estado sea modificado. Por ejemplo: cuando una sesión quiere modificar un registro, ésta lee y hace UPDATE con la última versión conocida de dicho registro, si hay otra transacción que se adelanta para hacer el mismo UPDATE, la versión cambia, y el UPDATE será obsoleto.</li>
+</ul>
+
+<p>Para la mayoría de las aplicaciones WEB, se debe utilizar el bloqueo optimista, como podemos ver, no es más que una implementación de una columna que versiona el registro y la combinación simple de un SELECT y un UPDATE, de esta forma evitamos los <a href="https://en.wikipedia.org/wiki/Deadlock">Deadlock</a>, la contención, y muchos otros problemas. Los ORM, como por ejemplo Hibernate o ActiveRecord tienen ésta funcionalidad implementada, nos quitan una capa más de detalle y no será necesario modificar el modelo y las consultas.</p>
+
+
+</div>
+
+<div id="related">
+  <h3>Related Posts</h3>
+  <ul class="posts">
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-emojis.html">MySQL y los emojis</a>
+    </li>
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-timeouts.html">MySQL y los Timeouts</a>
+    </li>
+    
+    <li>
+      <span>12 Jun 2016 &raquo;</span> <a href="/teorema-cap.html">El teorema CAP</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      <div class="footer">
+        <div class="disclaimer">
+  
+  <p>
+    © DeBeAndo, 2020
+  </p>
+</div>
+      </div>
+    </div>
+  </div>
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17220206-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+</body>
+</html>

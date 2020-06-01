@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "MySQL y los emojis"
-date:   2020-05-15
+date:   2020-05-18
 categories: MySQL
 published: true
 tags: [mysql, collation]

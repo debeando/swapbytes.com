@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeBeAndo - MySQL Balanceo de Carga & Failover con HAProxy</title>
+  <meta name="author" content="DeBeAndo" />
+  <meta name="description" content="DeBeAndo Blog" />
+  <link rel="canonical" href="http://0.0.0.0:4000/mysql-haproxy-balanceo-carga-failover.html" />
+
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:600,800" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="alternate" type="application/atom+xml" title="DeBeAndo" href="http://0.0.0.0:4000/atom.xml" />
+
+  <link rel="stylesheet" href="/assets/css/all.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container">
+    <div class="four columns sidebar">
+      <nav>
+  <h1><a href="/">DeBeAndo</a></h1>
+  <a href="/">
+    <img src="/logo.png" id="logo" alt="logo"/>
+  </a>
+  <div id="social">
+    <div id="stalker">
+  
+  <a title="swapbyt3s on Github" href="https://github.com/swapbyt3s">
+    <i class="fa fa-github-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="debeando on Twitter" href="https://twitter.com/debeando">
+    <i class="fa fa-twitter-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="Atom feed" id="atom" href="/atom.xml">
+    <i class="fa fa-rss-square"></i>
+  </a>
+  
+</div>
+
+  </div>
+</nav>
+
+    </div>
+
+    <div class="eleven columns content">
+      <p class="meta">
+  January 11, 2015 
+  <a href="/">
+    <i class="home fa fa-home"></i>
+  </a>
+</p>
+
+<h1 class="title">MySQL Balanceo de Carga & Failover con HAProxy</h1>
+
+<div id="post">
+  <p>La Base de Datos es un servicio muy importante que debe estar operativo el 99.9999%, hay muchas arquitecturas para lograr esto, todo depende de las necesidades, hoy les explico la más básica usando un Master y dos Slaves con AWS y HAProxy.</p>
+
+<p>Los Slaves se usan para las lecturas, todo el tráfico que es de disposición <strong>NO</strong> inmediata (&lt;1s) debe ser accedido desde los Slaves, la idea es hacer un balanceo de carga, le quitamos peso al Master y se lo delegamos a los Slaves.</p>
+
+<p>Como podemos imaginar, usar Slaves no son muy seguros, de vez en cuando se rompe por una serie de motivos, o necesitamos hacer mantenimiento y no debemos detener el servicio, entonces creamos una arquitectura tolerante a fallos como se muestra en la siguiente imagen:</p>
+
+<p><img src="http://0.0.0.0:4000/assets/mysql_master_slave_failover.png" alt="MySQL Arquitectura" /></p>
+
+<p>Podemos observar que todo lo que está susceptible a fallos está duplicado. Hago una breve descripción de cada elemento que interviene en el diagrama:</p>
+
+<ul>
+  <li><strong>APPS:</strong> Las aplicaciones con una configuración especial saben dirigir el tráfico de lectura o de escritura.</li>
+  <li><strong>Master:</strong> Usamos un RDS Multi A-Z, esto permite una redundancia de servidores en multiples zonas, y entra en acción una zona u otra si una de ellas falla. Si no usamos RDS recomiendo tener una configuración Multi Master, hay una solución muy buena llamada Percona.</li>
+  <li><strong>DNS:</strong> Cada servidor se le crea un CNAME, pero uno de ellos, está definido con dos IP’s, que es para los HAProxy, así tenemos redundancia, Route 53 de AWS permite hacer esto (Como los de Amazon nos quitan trabajo).</li>
+  <li><strong>Slave:</strong> Las instancias de MySQL, no requiere ninguna configuración especial.</li>
+  <li><strong>HAProxy:</strong> Éste servicio debe usar la versión 1.5 que tiene soporte para MySQL. Depende como lo configuremos, pero balancea las conexiones en Round Robin por ejemplo, también podemos definir el número máximo de conexiones, como una conexión de backup que valla contra el Master en caso de que todos los Slaves fallen.</li>
+</ul>
+
+<h3 id="cronología-de-un-desastre">Cronología de un desastre:</h3>
+
+<p>Vamos a ver en orden que pasa si algo falla y como se resuelve:</p>
+
+<ul>
+  <li>Si el DNS detecta que uno de los HAProxy falla, el DNS le pasa la conexión a otro HAProxy.</li>
+  <li>Si el HAProxy detecta que un slave no responde, le pasa la conexión a otro Slave.</li>
+  <li>Si todos los Slaves no responden, el HAProxy redirige la conexión al Master.</li>
+</ul>
+
+<p>Para que todos los pasos anteriores sean transparentes para la aplicación, está debe tener una tolerancia a fallos de conexiones. Lo que quiero decir, es: que si una conexión es interrumpida, la vuelve a reanudar sin mostrar mensajes de error.</p>
+
+<p>Es muy importante tener algún sistema de monitoring de cada cosa que está involucrado en el diagrama, sino no podemos entrar en acción rápido para prevenir algún desastre. También debe tener bien calculado y configurado el número de conexiones soportadas por cada instancia de MySQL.</p>
+
+</div>
+
+<div id="related">
+  <h3>Related Posts</h3>
+  <ul class="posts">
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-emojis.html">MySQL y los emojis</a>
+    </li>
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-timeouts.html">MySQL y los Timeouts</a>
+    </li>
+    
+    <li>
+      <span>12 Jun 2016 &raquo;</span> <a href="/teorema-cap.html">El teorema CAP</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      <div class="footer">
+        <div class="disclaimer">
+  
+  <p>
+    © DeBeAndo, 2020
+  </p>
+</div>
+      </div>
+    </div>
+  </div>
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17220206-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+</body>
+</html>

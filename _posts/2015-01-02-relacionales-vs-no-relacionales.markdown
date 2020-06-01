@@ -2,7 +2,7 @@
 layout: post
 title:  "Bases de datos relacionales y no relacionales"
 date:   2015-01-24
-categories: Base de Datos
+categories: Base-de-Datos
 tags: [database]
 ---
 

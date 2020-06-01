@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeBeAndo - Interpretar los mensajes de error de MySQL</title>
+  <meta name="author" content="DeBeAndo" />
+  <meta name="description" content="DeBeAndo Blog" />
+  <link rel="canonical" href="http://0.0.0.0:4000/interpretar-mensajes-error-mysql.html" />
+
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:600,800" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="alternate" type="application/atom+xml" title="DeBeAndo" href="http://0.0.0.0:4000/atom.xml" />
+
+  <link rel="stylesheet" href="/assets/css/all.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container">
+    <div class="four columns sidebar">
+      <nav>
+  <h1><a href="/">DeBeAndo</a></h1>
+  <a href="/">
+    <img src="/logo.png" id="logo" alt="logo"/>
+  </a>
+  <div id="social">
+    <div id="stalker">
+  
+  <a title="swapbyt3s on Github" href="https://github.com/swapbyt3s">
+    <i class="fa fa-github-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="debeando on Twitter" href="https://twitter.com/debeando">
+    <i class="fa fa-twitter-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="Atom feed" id="atom" href="/atom.xml">
+    <i class="fa fa-rss-square"></i>
+  </a>
+  
+</div>
+
+  </div>
+</nav>
+
+    </div>
+
+    <div class="eleven columns content">
+      <p class="meta">
+  December 26, 2014 
+  <a href="/">
+    <i class="home fa fa-home"></i>
+  </a>
+</p>
+
+<h1 class="title">Interpretar los mensajes de error de MySQL</h1>
+
+<div id="post">
+  <p>Cuando trabajas en un equipo de desarrollo y eres responsable de la base de datos, te preguntan frecuentemente por los errores que van apareciendo y su posible relación con MySQL. De todo puede pasar, desde problemas de configuración, de conexión, de lógica y sintaxis, en fin… en estos casos hay que orientarlos y quiero explicarles de que va todo esto.</p>
+
+<p>Los mensajes de error se dividen en dos grandes grupos, los que se producen del lado del <strong>servidor</strong> y los del lado del <strong>cliente</strong>. Para conocer un poco más que significa cada código de error, existe una aplicación llamada <a href="http://dev.mysql.com/doc/refman/5.6/en/perror.html">perror</a>.</p>
+
+<h3 id="errores-del-lado-del-servidor">Errores del lado del Servidor</h3>
+
+<p>Aquí se presentan todos aquellos <a href="http://dev.mysql.com/doc/refman/5.6/en/error-messages-server.html">errores del lado del servidor</a> que <strong>tienen que  ver en su mayoría con problemas de lógica o sintaxis del SQL, o alguna violación de un constraint.</strong> Todos estos los identificamos porque su código de error están entre el número 1000 y 1999.</p>
+
+<p>Cuando se genera este tipo de error en MySQL, el servidor envía el código y el mensaje al cliente. Es importante destacar que NO hay forma de ocultar estos errores.</p>
+
+<p>En caso de ser una excepción por alguna validación del constraint, se recomienda que la aplicación sea capaz de poder parsear el mensaje y controlarlo.</p>
+
+<h3 id="errores-del-lado-del-cliente">Errores del lado del Cliente</h3>
+
+<p>Las aplicaciones o drivers que se utilizan para conectarse a MySQL necesitan de la librería <a href="http://dev.mysql.com/downloads/connector/c/">Connector de MySQL</a>, en ella existe una definición de los <a href="http://dev.mysql.com/doc/refman/5.6/en/error-messages-client.html">mensajes de Error</a>, el siguiente enlace es la librería del lenguaje C. Podemos examinar el código fuente para ir aprendiendo un poco de como funcionan.</p>
+
+<p>Están por encima del valor de 2000. Por ahora no son más de 70 errores, y <strong>tienen que ver con problemas de conexión</strong>. La librería Connector se encarga de ponerle un mensaje al código de error.</p>
+
+<p>En este caso hay que probar siempre muy bien la nueva versión de la librería a implementar en producción, aquí empiezan muchos problemas cuando hay actualizaciones, mi experiencia es con la gema <a href="https://github.com/brianmario/mysql2">mysql2</a> de ruby.</p>
+
+<p>Para poder hallar con el problema hay que investigar un poco por todos lados, aquí dejo varios tips:</p>
+
+<ul>
+  <li>Lo más importante, leer el mensaje de error y analizarlo. No llamar impulsivamente al DBA para que lo lea por ti, google es tu amigo.</li>
+  <li>Revisar si ha habido algún cambio de driver y configuración.</li>
+  <li>Si es un problema de conexión, es bueno ver los logs para hallar con alguna pista.</li>
+</ul>
+
+<p>Suerte!</p>
+
+</div>
+
+<div id="related">
+  <h3>Related Posts</h3>
+  <ul class="posts">
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-emojis.html">MySQL y los emojis</a>
+    </li>
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-timeouts.html">MySQL y los Timeouts</a>
+    </li>
+    
+    <li>
+      <span>12 Jun 2016 &raquo;</span> <a href="/teorema-cap.html">El teorema CAP</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      <div class="footer">
+        <div class="disclaimer">
+  
+  <p>
+    © DeBeAndo, 2020
+  </p>
+</div>
+      </div>
+    </div>
+  </div>
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17220206-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+</body>
+</html>

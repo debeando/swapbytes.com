@@ -1,0 +1,148 @@
+---
+[
+
+{"date": "Fri, 15 May 2020 00:00:00 -0500",
+"categories": ["MySQL"],
+"tags": ["mysql","collation"],
+"title": "MySQL y los emojis",
+"url": "/mysql-emojis.html"},
+
+{"date": "Fri, 15 May 2020 00:00:00 -0500",
+"categories": ["MySQL"],
+"tags": ["mysql","timeout"],
+"title": "MySQL y los Timeouts",
+"url": "/mysql-timeouts.html"},
+
+{"date": "Sun, 12 Jun 2016 00:00:00 -0500",
+"categories": ["Base","de","Datos"],
+"tags": ["database"],
+"title": "El teorema CAP",
+"url": "/teorema-cap.html"},
+
+{"date": "Mon, 11 Apr 2016 00:00:00 -0500",
+"categories": ["MySQL"],
+"tags": ["mysql","update","lock"],
+"title": "Actualizar datos de una tabla sin bloquearla desde un archivo",
+"url": "/actualizar-bloquearla.html"},
+
+{"date": "Sat, 05 Mar 2016 00:00:00 -0600",
+"categories": ["MySQL"],
+"tags": ["mysql","replica","slave"],
+"title": "Monitorizar y resolver problemas de replicación en MySQL",
+"url": "/monitorizar-resolver-problemas-replicacion-mysql.html"},
+
+{"date": "Fri, 12 Feb 2016 00:00:00 -0600",
+"categories": ["MySQL"],
+"tags": ["mysql"],
+"title": "Buscar registros huérfanos",
+"url": "/registros-huerfanos.html"},
+
+{"date": "Mon, 08 Feb 2016 00:00:00 -0600",
+"categories": ["MySQL"],
+"tags": ["mysql","collation"],
+"title": "Collation, diferencias entre utf8_general_ci y utf8_unicode_ci",
+"url": "/collation-diferencias-utf8_general_ci-utf8_unicode_ci.html"},
+
+{"date": "Tue, 17 Nov 2015 00:00:00 -0600",
+"categories": ["MySQL"],
+"tags": ["mysql"],
+"title": "Bloqueos en MySQL",
+"url": "/bloqueos-optimistas-pesimistas-mysql.html"},
+
+{"date": "Thu, 23 Jul 2015 00:00:00 -0500",
+"categories": ["MySQL"],
+"tags": ["mysql","cli"],
+"title": "Seguridad en MySQL con mysql_config_editor",
+"url": "/mysql-config-editor.html"},
+
+{"date": "Mon, 08 Jun 2015 00:00:00 -0500",
+"categories": ["Base","de","Datos"],
+"tags": ["database","nosql"],
+"title": "Origen de la palabra NoSQL",
+"url": "/origen-nosql.html"},
+
+{"date": "Tue, 31 Mar 2015 00:00:00 -0500",
+"categories": ["Base","de","Datos"],
+"tags": ["mysql","lock"],
+"title": "Eventos y bloqueo exclusivo",
+"url": "/eventos-y-bloqueo-exclusivo.html"},
+
+{"date": "Sun, 15 Feb 2015 00:00:00 -0600",
+"categories": ["Base","de","Datos"],
+"tags": ["mysql","conexion","process"],
+"title": "Processes, Threads & Connections",
+"url": "/mysql-processes-threads-connections.html"},
+
+{"date": "Sun, 15 Feb 2015 00:00:00 -0600",
+"categories": ["Base","de","Datos"],
+"tags": ["mysql"],
+"title": "¿Por qué no debes usar relaciones polimórficas?",
+"url": "/relaciones-polimorficas.html"},
+
+{"date": "Sat, 24 Jan 2015 00:00:00 -0600",
+"categories": ["Base","de","Datos"],
+"tags": ["mysql","isolation"],
+"title": "Niveles de aislamiento en Base de Datos",
+"url": "/niveles-aislamiento.html"},
+
+{"date": "Sat, 24 Jan 2015 00:00:00 -0600",
+"categories": ["Base-de-Datos"],
+"tags": ["database"],
+"title": "Bases de datos relacionales y no relacionales",
+"url": "/relacionales-vs-no-relacionales.html"},
+
+{"date": "Wed, 14 Jan 2015 00:00:00 -0600",
+"categories": ["Base","de","Datos"],
+"tags": ["database"],
+"title": "Rol de un DBA",
+"url": "/rol-dba.html"},
+
+{"date": "Tue, 13 Jan 2015 00:00:00 -0600",
+"categories": ["Base","de","Datos"],
+"tags": ["mysql"],
+"title": "Darle un poco de color a la consola de MySQL",
+"url": "/color-consola-mysql.html"},
+
+{"date": "Sun, 11 Jan 2015 00:00:00 -0600",
+"categories": ["MySQL"],
+"tags": ["mysql","ha","proxysql"],
+"title": "MySQL Balanceo de Carga & Failover con HAProxy",
+"url": "/mysql-haproxy-balanceo-carga-failover.html"},
+
+{"date": "Wed, 07 Jan 2015 00:00:00 -0600",
+"categories": ["MySQL"],
+"tags": ["mysql","process"],
+"title": "Trabajando con largas listas de procesos en MySQL",
+"url": "/trabajando-largas-listas-procesos-mysql.html"},
+
+{"date": "Thu, 01 Jan 2015 00:00:00 -0600",
+"categories": ["MySQL"],
+"tags": ["mysql"],
+"title": "Paginar en la consola de MySQL",
+"url": "/paginar-consola-mysql.html"},
+
+{"date": "Fri, 26 Dec 2014 00:00:00 -0600",
+"categories": ["Base","de","Datos"],
+"tags": ["mysql","errors"],
+"title": "Interpretar los mensajes de error de MySQL",
+"url": "/interpretar-mensajes-error-mysql.html"},
+
+{"date": "Wed, 26 Feb 2014 00:00:00 -0600",
+"categories": ["Base","de","Datos"],
+"tags": ["mysql","cache"],
+"title": "¿Cómo funciona y se configura la Cache de MySQL?",
+"url": "/como-funciona-configura-cache-mysql/"},
+
+{"date": "Sat, 30 Oct 2010 00:00:00 -0500",
+"categories": ["Base","de","Datos"],
+"tags": ["database","model"],
+"title": "El modelo Atributos & Tipos (EAV) o List of Values (LOV)",
+"url": "/modelo-atributos-tipos-eav-diseno-base-de-datos/"},
+
+{"date": "Thu, 05 Aug 2010 00:00:00 -0500",
+"categories": ["Base","de","Datos"],
+"tags": ["database"],
+"title": "Errores frecuentes en la normalización de una Base de Datos",
+"url": "/normalizacion-base-de-datos-5-fallas-mas-frecuentes/"},
+
+false]

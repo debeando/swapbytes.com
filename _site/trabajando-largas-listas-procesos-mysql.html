@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeBeAndo - Trabajando con largas listas de procesos en MySQL</title>
+  <meta name="author" content="DeBeAndo" />
+  <meta name="description" content="DeBeAndo Blog" />
+  <link rel="canonical" href="http://0.0.0.0:4000/trabajando-largas-listas-procesos-mysql.html" />
+
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:600,800" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="alternate" type="application/atom+xml" title="DeBeAndo" href="http://0.0.0.0:4000/atom.xml" />
+
+  <link rel="stylesheet" href="/assets/css/all.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container">
+    <div class="four columns sidebar">
+      <nav>
+  <h1><a href="/">DeBeAndo</a></h1>
+  <a href="/">
+    <img src="/logo.png" id="logo" alt="logo"/>
+  </a>
+  <div id="social">
+    <div id="stalker">
+  
+  <a title="swapbyt3s on Github" href="https://github.com/swapbyt3s">
+    <i class="fa fa-github-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="debeando on Twitter" href="https://twitter.com/debeando">
+    <i class="fa fa-twitter-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="Atom feed" id="atom" href="/atom.xml">
+    <i class="fa fa-rss-square"></i>
+  </a>
+  
+</div>
+
+  </div>
+</nav>
+
+    </div>
+
+    <div class="eleven columns content">
+      <p class="meta">
+  January 07, 2015 
+  <a href="/">
+    <i class="home fa fa-home"></i>
+  </a>
+</p>
+
+<h1 class="title">Trabajando con largas listas de procesos en MySQL</h1>
+
+<div id="post">
+  <p>Los fans de la terminal nos encontramos frecuentemente con algunas limitaciones por el tamaño del monitor y todo el contenido, en este caso hablo de listar y filtrar entre muchos rows en MySQL sin la opción WHERE como; <strong>“SHOW PROCESSLIST;”</strong> y <strong>“SHOW TABLES;”</strong>. Generalmente necesitamos buscar algo en largas listas para; matar procesos, verificar conexiones, consultas, etc… y como podemos hacer para mostrar los que nos interesa?.</p>
+
+<p>Lo podemos cambiar estando dentro de la consola de MySQL, por ejemplo; Necesito listar todas las conexiones que sean distintas al estado <strong>Sleep</strong>:</p>
+
+<pre><code class="language-SQL">mysql&gt; \P grep -v Sleep
+PAGER set to 'grep -v Sleep'
+mysql&gt; SHOW PROCESSLIST;
++--------+---------+-----------+------+---------+-------+-------+------------------+
+| Id     | User    | Host      | db   | Command | Time  | State | Info             |
++--------+---------+-----------+------+---------+-------+-------+------------------+
+| 109530 | root    | localhost | NULL | Query   |     0 | NULL  | show processlist |
+</code></pre>
+
+<p>Listo, así de simple o lo hacemos más complejo? ahora necesito saber cuales son las conexiones dormidas, y lo ordenamos de forma descendente, nos quedaría así:</p>
+
+<pre><code class="language-SQL">mysql&gt; \P grep Sleep | sort -t \| -k 7 -n -r
+PAGER set to 'grep Sleep | sort -t \| -k 7 -n -r'
+mysql&gt; SHOW PROCESSLIST;
+| 7550471 | app | 10.65.54.110:53481   | demo  | Sleep | 9559 |      | NULL |
+| 7550429 | app | 10.65.54.110:53479   | demo  | Sleep | 8877 |      | NULL |
+| 7560240 | app | 10.33.181.84:57960   | demo  | Sleep | 2029 |      | NULL |
+| 7560214 | app | 10.33.181.84:57955   | demo  | Sleep | 1058 |      | NULL |
+| 7560993 | app | 10.33.181.84:58083   | demo  | Sleep |  616 |      | NULL |
+| 7548835 | app | 10.36.142.140:39371  | demo  | Sleep |  225 |      | NULL |
+| 7548697 | app | 10.36.142.140:39350  | demo  | Sleep |  211 |      | NULL |
+| 7555321 | app | 10.65.19.225:45810   | demo  | Sleep |  208 |      | NULL |
+| 7562608 | app | 10.65.19.225:47517   | demo  | Sleep |  109 |      | NULL |
+| 5517613 | app | localhost:25380      | mysql | Sleep |    7 |      | NULL |
+| 7562775 | app | 10.250.249.182:42425 | demo  | Sleep |    5 |      | NULL |
+| 7562774 | app | 10.250.249.182:42424 | demo  | Sleep |    5 |      | NULL |
+| 7562679 | app | 10.250.249.182:42370 | demo  | Sleep |    1 |      | NULL |
+</code></pre>
+
+<p>El ejemplo habla por si solo, y como podemos observar, simplemente estamos usando los comandos básicos de Linux, no hay mayor cosa. Un ejemplo más, si queremos listar cuales tablas quedan de respaldo cuando se hace un alter table con las <a href="http://www.percona.com/software/percona-toolkit/">Percona Tools</a>:</p>
+
+<pre><code class="language-SQL">mysql&gt; \P egrep "_*_(new|old)";
+PAGER set to 'egrep "_*_(new|old)";'
+mysql&gt; SHOW TABLES;
+| _users_old                         |
+| _acl_new                           |
+</code></pre>
+
+<p>Si queremos quitar el filtro y ponerlo como antes, tenemos dos formas;</p>
+
+<ul>
+  <li><strong>La primera:</strong></li>
+</ul>
+
+<pre><code class="language-SQL">mysql&gt; \P
+Default pager wasn't set, using stdout.
+</code></pre>
+
+<ul>
+  <li><strong>La segunda:</strong></li>
+</ul>
+
+<pre><code class="language-SQL">mysql&gt; NOPAGER;
+PAGER set to stdout
+</code></pre>
+
+<p>Listo, ya somos un poco más hábiles con el comando <strong>mysql</strong>.</p>
+
+
+</div>
+
+<div id="related">
+  <h3>Related Posts</h3>
+  <ul class="posts">
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-emojis.html">MySQL y los emojis</a>
+    </li>
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-timeouts.html">MySQL y los Timeouts</a>
+    </li>
+    
+    <li>
+      <span>12 Jun 2016 &raquo;</span> <a href="/teorema-cap.html">El teorema CAP</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      <div class="footer">
+        <div class="disclaimer">
+  
+  <p>
+    © DeBeAndo, 2020
+  </p>
+</div>
+      </div>
+    </div>
+  </div>
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17220206-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeBeAndo - Monitorizar y resolver problemas de replicación en MySQL</title>
+  <meta name="author" content="DeBeAndo" />
+  <meta name="description" content="DeBeAndo Blog" />
+  <link rel="canonical" href="http://0.0.0.0:4000/monitorizar-resolver-problemas-replicacion-mysql.html" />
+
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:600,800" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="alternate" type="application/atom+xml" title="DeBeAndo" href="http://0.0.0.0:4000/atom.xml" />
+
+  <link rel="stylesheet" href="/assets/css/all.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container">
+    <div class="four columns sidebar">
+      <nav>
+  <h1><a href="/">DeBeAndo</a></h1>
+  <a href="/">
+    <img src="/logo.png" id="logo" alt="logo"/>
+  </a>
+  <div id="social">
+    <div id="stalker">
+  
+  <a title="swapbyt3s on Github" href="https://github.com/swapbyt3s">
+    <i class="fa fa-github-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="debeando on Twitter" href="https://twitter.com/debeando">
+    <i class="fa fa-twitter-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="Atom feed" id="atom" href="/atom.xml">
+    <i class="fa fa-rss-square"></i>
+  </a>
+  
+</div>
+
+  </div>
+</nav>
+
+    </div>
+
+    <div class="eleven columns content">
+      <p class="meta">
+  March 05, 2016 
+  <a href="/">
+    <i class="home fa fa-home"></i>
+  </a>
+</p>
+
+<h1 class="title">Monitorizar y resolver problemas de replicación en MySQL</h1>
+
+<div id="post">
+  <p>La replicación de datos con slaves es algo muy fácil de configurar y aporta muchos beneficios, pero aveces trae sus grandes problemas si no tenemos en cuenta algunos aspectos de configuración, hardware y red entre otras cosas, vamos a comentar un buen grupo de ellos y ayudarte a saber donde puede estar el problema, se que es muy largo el POST, hay mucho que cubrir, pero tratare de dar la idea.</p>
+
+<h2 id="ventajas-de-usar-slaves">Ventajas de usar Slaves</h2>
+
+<ul>
+  <li>Divide las escrituras en un master y lecturas en los slaves para distribuir las cargas de trabajo. Esto no lo hace MySQL de forma transparente, la aplicación debe saber que sentencias van al master y al slave.</li>
+  <li>Los Slaves que son los servidores de lectura, se pueden optimizar para hacer minería de datos o procesos de reportes.</li>
+  <li>Se puede usar un slave para remplazar el master en caso de algún desastre como una medida de prevención.</li>
+  <li>Como respaldo usando el retraso en la replicación para recuperar datos, ver la variable <a href="https://dev.mysql.com/doc/refman/5.6/en/replication-delayed.html">MASTER_DELAY</a>.</li>
+  <li>Incluso podemos configurar el MultiMaster de dos nodos, pero esto aveces no funciona bien por como esta programada la aplicación.</li>
+</ul>
+
+<p>Los problemas que surgen por la replicación no son nuevos, podemos clasificarlos en dos grandes grupos; Cuando se interrumpe la replicación por alguna inconsistencia, o un retraso de la replicación a pesar que no esté interrumpida.</p>
+
+<p>Para saber el estado de una replicación ejecute este comando en el slave:</p>
+
+<pre><code class="language-SQL">SHOW SLAVE STATUS\G
+</code></pre>
+
+<p>Recuerde que el estado de la replicación es individual en cada slave. A partir de aquí, tenemos una serie de variables que nos indica que está pasando y también les explico como resolver cualquiera de estos dos grandes problemas.</p>
+
+<h3 id="como-identificar-una-replicación-interrumpida">Como identificar una replicación interrumpida:</h3>
+
+<p>Este problema se puede presentar por una serie de motivos:</p>
+
+<ul>
+  <li>Inconsistencia de datos entre el Master y el Slave.</li>
+  <li>Diferentes configuraciones.</li>
+  <li>Diferente hora.</li>
+  <li>Problemas de red.</li>
+  <li>Bloqueos de tablas o de registros.</li>
+  <li>Muchos INSERT, UPDATE o DELETES.</li>
+</ul>
+
+<p>Cuando se ejecuta el comando “SHOW SLAVE STATUS” que mencionamos anteriormente, entre todas las variables que nos muestra, debemos hacerle caso a estas:</p>
+
+<ul>
+  <li><strong>Slave_IO_Running:</strong> Si es “Yes”, entonces el esclavo está conectado al master.</li>
+  <li><strong>Slave_SQL_Running:</strong> Si es “Yes”, entonces el esclavo está procesando las consultas SQL.</li>
+  <li><strong>Seconds_Behind_Master:</strong> Indica la cantidad de posiciones retrasadas del binlog, si es 0 es que todo está bien.</li>
+  <li><strong>Last_Error:</strong> Si “Slave_SQL_Running” es “No”, entonces muestra la última sentencia SQL que produjo un error y se detiene la replicación.</li>
+</ul>
+
+<p>Para resolver la mayoría de los casos, solo debemos ejecutar estos tres comandos:</p>
+
+<pre><code class="language-SQL">STOP SLAVE; SET GLOBAL SQL_SLAVE_SKIP_COUNTER=1; START SLAVE;
+</code></pre>
+
+<p>Y volver a ejecutar este comando para verificar que no hayan más errores:</p>
+
+<pre><code class="language-SQL">SHOW SLAVE STATUS\G
+</code></pre>
+
+<p>Es muy importante saber porque pasó esto y como prevenirlo, el echo de saltar el error y continuar nos crea una inconsistencia de los datos, debemos tomar nota del mensaje de error y resolverlo a mano.</p>
+
+<h3 id="como-identificar-el-retraso-de-la-replicación">Como identificar el retraso de la replicación:</h3>
+
+<p>Primero debemos entender como funciona y cuales son los indicadores que se pueden encontrar en el estado de la replica. La replicación en MySQL trabaja con dos hilos, IO_THREAD y SQL_THREAD.</p>
+
+<ul>
+  <li>El primer hilo es IO_THREAD, se conecta a un maestro, lee los eventos del binarios del maestro y los va guardando en un log local llamado <strong>relay log</strong> (registro retrasado). Corresponde este hilo con la variable de estado <strong>Slave_IO_Running</strong>.</li>
+  <li>El segundo hilo es SQL_THREAD, lee los eventos del relay log almacenado localmente en el esclavo, el cual fue escrito por el hilo IO_THREAD y luego los aplica lo más rápido posible en el slave. Corresponde este hilo con la variable de estado <strong>Slave_SQL_Running</strong>.</li>
+</ul>
+
+<p>Siempre que se presenta un retraso en la replicación, es importante saber cual de los dos hilos se encuentra el problema. Normalmente, los hilos de E/S no causarían enormes retrasos de replicación, ya que una vez que se leen del master, se aplican en el slave. Sin embargo, el retraso se debe a una limitación del hardware o por alguna configuración:</p>
+
+<ul>
+  <li>Si es por el rendimiento de la red, afecta al hilo <strong>IO_THREAD</strong>, aquí debemos evaluar si es un tema de saturación de la red, la <a href="https://es.wikipedia.org/wiki/Tarjeta_de_red">NIC</a> no es suficiente para el trafico, u otro problema de red.</li>
+  <li>Si es la velocidad del Hardware del slave al procesar el relay log es afectado por el <strong>SQL_THREAD</strong>. Diferentes configuraciones del servicio, indice de los esquemas, carga de trabajo, hardware lento.</li>
+</ul>
+
+<p>Todo estos detalles hay que verlos con mucho cuidado, se requiere paciencia, pero en líneas generales, aquí se han mencionado todos los puntos que debemos evitar para tener problemas en la replicación Master/Slave.</p>
+
+<p>Les deseo suerte.</p>
+
+
+</div>
+
+<div id="related">
+  <h3>Related Posts</h3>
+  <ul class="posts">
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-emojis.html">MySQL y los emojis</a>
+    </li>
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-timeouts.html">MySQL y los Timeouts</a>
+    </li>
+    
+    <li>
+      <span>12 Jun 2016 &raquo;</span> <a href="/teorema-cap.html">El teorema CAP</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      <div class="footer">
+        <div class="disclaimer">
+  
+  <p>
+    © DeBeAndo, 2020
+  </p>
+</div>
+      </div>
+    </div>
+  </div>
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17220206-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+</body>
+</html>

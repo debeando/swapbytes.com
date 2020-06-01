@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeBeAndo - Rol de un DBA</title>
+  <meta name="author" content="DeBeAndo" />
+  <meta name="description" content="DeBeAndo Blog" />
+  <link rel="canonical" href="http://0.0.0.0:4000/rol-dba.html" />
+
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:600,800" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="alternate" type="application/atom+xml" title="DeBeAndo" href="http://0.0.0.0:4000/atom.xml" />
+
+  <link rel="stylesheet" href="/assets/css/all.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container">
+    <div class="four columns sidebar">
+      <nav>
+  <h1><a href="/">DeBeAndo</a></h1>
+  <a href="/">
+    <img src="/logo.png" id="logo" alt="logo"/>
+  </a>
+  <div id="social">
+    <div id="stalker">
+  
+  <a title="swapbyt3s on Github" href="https://github.com/swapbyt3s">
+    <i class="fa fa-github-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="debeando on Twitter" href="https://twitter.com/debeando">
+    <i class="fa fa-twitter-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="Atom feed" id="atom" href="/atom.xml">
+    <i class="fa fa-rss-square"></i>
+  </a>
+  
+</div>
+
+  </div>
+</nav>
+
+    </div>
+
+    <div class="eleven columns content">
+      <p class="meta">
+  January 14, 2015 
+  <a href="/">
+    <i class="home fa fa-home"></i>
+  </a>
+</p>
+
+<h1 class="title">Rol de un DBA</h1>
+
+<div id="post">
+  <p>Puede que este papel hoy en día se este perdiendo, y se haya mezclado con los de Operaciones o con algún Desarrollador, está mal!, en proyectos grandes es muy importante dedicarle todo el tiempo posible, llega un momento que el volumen de datos y el tráfico se vuelve insostenible, a este punto, <strong>cuando algo falla es catastrófico y no suele arreglarse rápidamente</strong>, la prevención es bastante crucial y se vuelve una eterna lucha.</p>
+
+<p>Ser Administrador de Bases de Datos es algo bastante exigente, <strong>porqué debes saber un poco de todo</strong>; de programación, de sistemas y mucho de Bases de Datos. El dominio de cada una de ellas es bastante crucial para entender como gestionar bien los recursos, prevenir incidencias e incluso resolverlas.</p>
+
+<p><img src="http://0.0.0.0:4000/assets/DBA01.png" alt="DBA" /></p>
+
+<p>Debes trabajar codo a codo con los Desarrolladores, antes que ellos se pongan a programar, debes estar diseñando nuevos modelos de datos, pensando principalmente como influye en el rendimiento y mantener la integridad, una vez terminada la parte de programación, debes hacer un Code Review de la Pull Request, luego es enviada al equipo de Quality Assurance, de ellos te puedes esperar de todo, es la idea no? Una vez que todo está listo, pasa a producción y aún no puedes quedarte tranquilo, debes seguir vigilando.</p>
+
+<p><strong>Cada empresa tiene un modelos de datos particular</strong>, depende mucho del modelo del negocio, de lo que consigues cuando llegas, de las personas, incluso el lenguaje de programación puede influenciar. Por eso que hay que ser flexibles hasta cierto punto.</p>
+
+<p>Mientras no estás trabajando con los desarrolladores, te dedicas más a la parte de sistemas, hacer actualizaciones, ver porque hay retraso de una replica, revisar un respaldo, revisar las gráficas buscando anomalías, tunear, probar cosas nuevas y ver que puedes ir mejorando, aquí la creatividad se te puede ir de las manos.</p>
+
+<p>Para saber que <strong>funciones cumple</strong> el rol, te listos unas cuantas:</p>
+
+<ul>
+  <li>Instalar, actualizar e implementar parches.</li>
+  <li>Diseñar las bases de datos.</li>
+  <li>Desarrollar, automatizar y probar estrategias de respaldo y restauración.</li>
+  <li>Administrar los servidores de bases de datos.</li>
+  <li>Administrar el almacenamiento y IOPS de MySQL.</li>
+  <li>Administrar la seguridad de los servidores y de MySQL.</li>
+  <li>Administrar los objetos de MySQL, como; tablas, particiones, índices, eventos, vistas y procedimientos almacenados.</li>
+  <li>Desarrollar y mantener mecanismos de ofuscación de datos sensibles en los respaldos para los desarrolladores.</li>
+  <li>Monitorizar y configurar la base de datos para el óptimo rendimiento.</li>
+  <li>Investigar, y reunir información de diagnostico para realizar reportes de futuras incidencias.</li>
+  <li>Evaluar y probar nuevas funcionalidad de MySQL.</li>
+  <li>Gestionar las migraciones o cambios que se llevan sobre el modelo.</li>
+  <li>Documentar todo.</li>
+</ul>
+
+<p>También podemos ir un poco más allá, mezclando lo nuestro con la parte de Operaciones y así somos más ágiles e independientes:</p>
+
+<ul>
+  <li>Implementar una infraestructura de monitoring y alertas.</li>
+  <li>Implementar y mantener los balanceadores de carga.</li>
+  <li>Ofrecer una plataforma de bases de datos para Business Intelligence.</li>
+  <li>Usar herramientas para gestionar de forma automática la configuración.</li>
+</ul>
+
+<p>Es mucho para no seguirlos aburriendo, para la próxima.</p>
+
+</div>
+
+<div id="related">
+  <h3>Related Posts</h3>
+  <ul class="posts">
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-emojis.html">MySQL y los emojis</a>
+    </li>
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-timeouts.html">MySQL y los Timeouts</a>
+    </li>
+    
+    <li>
+      <span>12 Jun 2016 &raquo;</span> <a href="/teorema-cap.html">El teorema CAP</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      <div class="footer">
+        <div class="disclaimer">
+  
+  <p>
+    © DeBeAndo, 2020
+  </p>
+</div>
+      </div>
+    </div>
+  </div>
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17220206-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+</body>
+</html>

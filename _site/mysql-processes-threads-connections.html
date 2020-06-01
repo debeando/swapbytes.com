@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeBeAndo - Processes, Threads & Connections</title>
+  <meta name="author" content="DeBeAndo" />
+  <meta name="description" content="DeBeAndo Blog" />
+  <link rel="canonical" href="http://0.0.0.0:4000/mysql-processes-threads-connections.html" />
+
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:600,800" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="alternate" type="application/atom+xml" title="DeBeAndo" href="http://0.0.0.0:4000/atom.xml" />
+
+  <link rel="stylesheet" href="/assets/css/all.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container">
+    <div class="four columns sidebar">
+      <nav>
+  <h1><a href="/">DeBeAndo</a></h1>
+  <a href="/">
+    <img src="/logo.png" id="logo" alt="logo"/>
+  </a>
+  <div id="social">
+    <div id="stalker">
+  
+  <a title="swapbyt3s on Github" href="https://github.com/swapbyt3s">
+    <i class="fa fa-github-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="debeando on Twitter" href="https://twitter.com/debeando">
+    <i class="fa fa-twitter-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="Atom feed" id="atom" href="/atom.xml">
+    <i class="fa fa-rss-square"></i>
+  </a>
+  
+</div>
+
+  </div>
+</nav>
+
+    </div>
+
+    <div class="eleven columns content">
+      <p class="meta">
+  February 15, 2015 
+  <a href="/">
+    <i class="home fa fa-home"></i>
+  </a>
+</p>
+
+<h1 class="title">Processes, Threads & Connections</h1>
+
+<div id="post">
+  <p>Suele pasar mucho que nos confundimos con estos tres términos; procesos, hilos y conexiones (Processes, Threads &amp; Connections), les quiero explicar un poco de que va cada uno y como están relacionados:</p>
+
+<ul>
+  <li>MySQL Server es un proceso de aplicación.</li>
+  <li>MySQL Server es multi hilo (multithreaded).</li>
+  <li>MySQL Server acepta multiples conexiones por TCP/IP.</li>
+  <li>MySQL Server dedica por cada conexión un hilo (thread).</li>
+  <li>Un hilo se puede llamar de vez en cuando proceso, y un proceso puede hacer referencia a una conexión.</li>
+</ul>
+
+<p>La última parte suena confuso, y me explico; MySQL Server (mysqld) es solo un proceso que se está ejecutando en el Sistema Operativo, el cual éste proceso permite tener muchos hilos de ejecución, un hilo por cada conexión realizada con el servidor, cuando se cierra la conexión se destruye el hilo.</p>
+
+<p>Crear y eliminar conexiones es una tarea costosa, porque se requiere administrar de forma dinámica una serie de recursos físicos, en especial la Memoria RAM, por eso existe la cache de hilos para optimizar las conexiones no persistentes, recuerda ver las variables: <a href="https://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_thread_cache_size" target="_blank">thread_cache_size</a> y <a href="https://dev.mysql.com/doc/refman/5.6/en/server-status-variables.html#statvar_Threads_cached" target="_blank">Threads_cached</a>.</p>
+
+<p>Si pensamos en todo esto, nos preguntamos porque el comando “<strong>SHOW PROCESSLIST</strong>” se llama así y no “<strong>SHOW THREADLIST</strong>”? Debe ser que es más fácil asociar proceso que hilo, una respuesta acertada no la sé.</p>
+
+<p>Vamos a demostrar que todo esto tiene sentido en el servidor, lo primero es que debemos crear varias conexiones y las mandamos al background, cada una de las conexión ejecutas es una sentencia SQL SLEEP para esperar 120 segundos y evitar que se cierre, al terminar el tiempo de espera se cierran y así lo hacemos más divertido:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="k">for </span>i <span class="k">in</span> <span class="o">{</span>1..4<span class="o">}</span>
+<span class="k">do
+  </span>mysql <span class="nt">-h</span> localhost <span class="nt">-u</span> root <span class="nt">-e</span> <span class="s1">'SELECT SLEEP(120);'</span> &amp;
+<span class="k">done</span>
+</code></pre></div></div>
+
+<p>Ahora accedemos para ejecutar los comandos administrativos e ir comparando valores:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>mysql <span class="nt">-h</span> localhost <span class="nt">-u</span> root
+mysql&gt; show processlist<span class="p">;</span>
++----+------+-----------+------+---------+------+------------+-------------------+
+| Id | User | Host      | db   | Command | Time | State      | Info              |
++----+------+-----------+------+---------+------+------------+-------------------+
+|  5 | root | localhost | NULL | Query   |    9 | User <span class="nb">sleep</span> | SELECT SLEEP<span class="o">(</span>120<span class="o">)</span> |
+|  6 | root | localhost | NULL | Query   |    9 | User <span class="nb">sleep</span> | SELECT SLEEP<span class="o">(</span>120<span class="o">)</span> |
+|  7 | root | localhost | NULL | Query   |    9 | User <span class="nb">sleep</span> | SELECT SLEEP<span class="o">(</span>120<span class="o">)</span> |
+|  8 | root | localhost | NULL | Query   |    9 | User <span class="nb">sleep</span> | SELECT SLEEP<span class="o">(</span>120<span class="o">)</span> |
+|  9 | root | localhost | NULL | Query   |    0 | init       | show processlist  |
++----+------+-----------+------+---------+------+------------+-------------------+
+</code></pre></div></div>
+
+<p>Con este comando podemos ver cual es el ID de la conexión en la lista de procesos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CONNECTION_ID<span class="o">()</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Aquí podemos consultar el estado de las variables relacionadas a las conexiones, estás indican el número de conexiones cacheadas, conectadas, creadas y ejecutadas:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; SHOW GLOBAL STATUS LIKE <span class="s1">'Threads%'</span><span class="p">;</span>
++-------------------+-------+
+| Variable_name     | Value |
++-------------------+-------+
+| Threads_cached    | 0     |
+| Threads_connected | 5     |
+| Threads_created   | 5     |
+| Threads_running   | 5     |
++-------------------+-------+
+</code></pre></div></div>
+
+<p>Al finalizar las consultas enviadas anteriormente con el loop, podemos ver de nuevo el estado de las variables del servidor, ahora se tienen cacheadas las últimas 4 conexiones, solo hay una conexión activa que es la que está ejecutando este comando, en total se han ejecutado 5 conexiones, y solo hay una en ejecución, que es ésta.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; SHOW GLOBAL STATUS LIKE <span class="s1">'Threads%'</span><span class="p">;</span>
++-------------------+-------+
+| Variable_name     | Value |
++-------------------+-------+
+| Threads_cached    | 4     |
+| Threads_connected | 1     |
+| Threads_created   | 5     |
+| Threads_running   | 1     |
++-------------------+-------+
+</code></pre></div></div>
+
+<h2 id="variables">Variables</h2>
+
+<p>Hay un par de <a href="https://dev.mysql.com/doc/refman/5.6/en/connection-threads.html">variables</a> que son para gestionar los recursos de conexión, es bueno revisarlas y asegurarse que todo está bien configurado en el servidor.</p>
+
+</div>
+
+<div id="related">
+  <h3>Related Posts</h3>
+  <ul class="posts">
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-emojis.html">MySQL y los emojis</a>
+    </li>
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-timeouts.html">MySQL y los Timeouts</a>
+    </li>
+    
+    <li>
+      <span>12 Jun 2016 &raquo;</span> <a href="/teorema-cap.html">El teorema CAP</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      <div class="footer">
+        <div class="disclaimer">
+  
+  <p>
+    © DeBeAndo, 2020
+  </p>
+</div>
+      </div>
+    </div>
+  </div>
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17220206-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeBeAndo - Errores frecuentes en la normalización de una Base de Datos</title>
+  <meta name="author" content="DeBeAndo" />
+  <meta name="description" content="DeBeAndo Blog" />
+  <link rel="canonical" href="http://0.0.0.0:4000/normalizacion-base-de-datos-5-fallas-mas-frecuentes/" />
+
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:600,800" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="alternate" type="application/atom+xml" title="DeBeAndo" href="http://0.0.0.0:4000/atom.xml" />
+
+  <link rel="stylesheet" href="/assets/css/all.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container">
+    <div class="four columns sidebar">
+      <nav>
+  <h1><a href="/">DeBeAndo</a></h1>
+  <a href="/">
+    <img src="/logo.png" id="logo" alt="logo"/>
+  </a>
+  <div id="social">
+    <div id="stalker">
+  
+  <a title="swapbyt3s on Github" href="https://github.com/swapbyt3s">
+    <i class="fa fa-github-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="debeando on Twitter" href="https://twitter.com/debeando">
+    <i class="fa fa-twitter-square"></i>
+  </a>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <a title="Atom feed" id="atom" href="/atom.xml">
+    <i class="fa fa-rss-square"></i>
+  </a>
+  
+</div>
+
+  </div>
+</nav>
+
+    </div>
+
+    <div class="eleven columns content">
+      <p class="meta">
+  August 05, 2010 
+  <a href="/">
+    <i class="home fa fa-home"></i>
+  </a>
+</p>
+
+<h1 class="title">Errores frecuentes en la normalización de una Base de Datos</h1>
+
+<div id="post">
+  <p>En los trabajos que me e envuelto con base de datos, e visto un gran número de ellas, muchas echas por empresas pequeñas y medianas especializadas en el desarrollo, de cualquier sector; comercial, educativo o independientes, al final de todo, existe algo en común, y me llevo a una  conclusión, “<strong>Será que NO tienen la mas mínima y remota idea de ¿Cómo hacer un modelo físico y aprovechar todas las bondades de un manejador de base de datos?</strong>”, y lo peor del caso, es que eso funciona milagrosamente y para ellos es indispensable toda su información <em>(obviamente)</em>, pero tienen un problema en común, <strong>el sistema no funciona bien</strong>, ¿Por qué será?</p>
+
+<p>En este artículo, a pesar de como empieza, se que podría generar muchas polémicas con desenlaces incomodos, para evitar disgustos a los lectores, se limitará todo a un solo aspecto, la debida normalización de una base de datos y todas aquellas características que reflejan los síntomas de una practica errónea. Se busca crear una conciencia en aquellas personas que participan en el campo y mejorar el producto al cliente.</p>
+
+<p>Estaré expresando mi opinión muy particular sobre la normalización de una Base de Datos en <strong>sistemas comunes</strong>, manteniendo un criterio firme ante los fundamentos adquiridos por la perseverante documentación y puesta en practica, con sus respectivos correctivos durante todo un ciclo de aprendizaje e implementación, en mi opinión un ejemplo a seguir son las buenas practicas de Oracle.</p>
+
+<p>La carrera de base de datos es muy amplia para su formación, se requiere de una fusión entre el diseño, la administración, y la programación para lograr un nivel aceptable, solo se tiene que hallar un punto intermedio de conocimiento que pueda prosperar en nuestro trabajo, no se pide que sean unos genios (si es posible mejor) ni unos mediocres (dios no los perdonará), hoy en día no existe excusa alguna para obtener información al respecto, <strong>el tiempo invertido será recompensado</strong>. La búsqueda se puede hacer en cualquier medio; Internet, Libros, Foros, Cursos oficiales, entre otros, al final de todo, <strong>el concepto y las características básicas de un manejador son comunes entre ellos</strong>.</p>
+
+<p>Hoy en día, una base de datos es una parte muy básica y elemental en todo sistema de información, si partimos de un correcto modelo, robusto e íntegro, nos traerá beneficios a futuro. ¿Porqué? esté es el núcleo de todo sistema, el que define las reglas de negocio, por ello se insiste mucho de su importancia, si aprovechamos sus bondades se descargan de actividades los programadores durante el desarrollo, <strong>perduraría mas en el tiempo</strong>, los administradores no tendrían fuertes dolores de cabeza para resolver los problemas, y como estas, existen otras.</p>
+
+<p>A continuación menciono cuales son las diversas situaciones que indican una mala practica, y de cada una de ellas explicare a que se hace referencia:</p>
+
+<ul>
+  <li><strong>Incorrecta normalización:</strong> Esto es algo muy habitual, y debe ser básico implementarlo. No se cumple el proceso de analizar y aplicar las diversas formas normales para hallar su mejor diseño, como mínimo se debe llegar hasta la tercera forma normal, su ausencia genera una inconsistencia en la data, por lo que trae la redundancia y limitación en la expansión del modelo, los cambios para reparar esto pueden ser muy radicales que comprometen los datos y el funcionamiento de la aplicación en una reacción en cadena.</li>
+  <li><strong>Ausencia de las relaciones:</strong> Esto ya parece ser una regla <s>(ironía)</s>, existen casos de que se implementan relaciones de forma parcial, pero la mayoría de las tablas son huérfanas, no existe una dependencia de una con otras como tal, su ausencia permite de forma incontrolable la inconsistencia de los datos, la relación es un simple mecanismo de validación que restringe una dependencia, su uso es básico, por ende, los manejadores de base de datos no se llamarían “Manejadores de Base de Datos Relacionales”, obvio no?.</li>
+  <li><strong>Ausencia de un estándar:</strong> Esta situación es muy amplia, se considera desde el nombrado de cualquier objeto hasta su orden, haciendo referencia que un objeto; puede ser una tabla, clave primaria, clave foránea, columnas, intertablas, indices, etc. Generando un malgaste de caracteres sin necesidad, falta de una “Auto-Documentación”, mayor esfuerzo de escritura, la identificación de cada objeto de forma intuitiva, y muchas otras cosas que se tienen que vivir para comprender sus bondades, a pesar que es algo en función de la estética, pero a todos nos gusta algo con unos detalles bien refinados, por eso un lamborghini a todos nos gusta.</li>
+  <li><strong>Ausencia de las restricciones y mecanismos de control:</strong> Esto ya parece ser una ciencia oculta y desconocida, e incluso he llegado a escuchar que hay empresas que quitan estos controles <s>(pre infarto)</s>, puede que tenga una explicación, como también la hay para cuando los crearon, la situación es que su ausencia evita validaciones adicionales, estos mecanismos de control pueden ser varios; como los disparadores (triggers), condiciones (check) y reglas (rules). Conocer sus bondades e implementarlas nos ayudaría mas de lo que imaginamos, como lo que es la auditoria, partición de tablas, controles mas robustos de los datos, etc. la imaginación es nuestro limite.</li>
+  <li><strong>Ausencia de la documentación:</strong> A pesar que no se implementa un correcto nombrado a los objetos, se presenta una escasez de la misma actividad para describir cada objeto, la ausencia de esta documentación puede generar una gran perdida de tiempo por malos entendidos, resultados erróneos, búsqueda de ayuda imprecisa, y cualquier inconveniente, seguramente nadie se quiere verse envuelto en esta situación tan incomoda.</li>
+</ul>
+
+<p>Estas situaciones no será el todo, pero son comunes, existen muchas otras mas que se deben cuidar, darle el correctivo adecuado ayudara a mitigar estos problemas a su debido tiempo, de lo contrario existirán problemas en un futuro no muy lejano. Es importante entender que quitarle los mecanismos de control a una aplicación y asignarlos a la Base de Datos es más óptimo, el motor del manejador está mucho mas optimizado que el de un lenguaje de programación, y la transferencia de información es otro factor que disminuye el rendimiento. La aplicación en si solo debe ser una herramienta para capturar y mostrar información, no para procesar la información.</p>
+
+<p>La base de datos no puede ser un simple y vulgar repositorio, donde cada problema se sale del paso con la improvisación, es preferible sentarse únicamente para analizar su correcto modelado, y con el tiempo se podrá disfrutar de sus grandes beneficio.</p>
+
+<p>Este es un pensamiento que siempre les digo:</p>
+
+<p>Toda información debe ser administrada desde su origen, <strong>de allí es donde se resuelven los problemas</strong>, así sus datos serán iguales en todos lados, al revés, será solo una gran pelota de parches.</p>
+
+</div>
+
+<div id="related">
+  <h3>Related Posts</h3>
+  <ul class="posts">
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-emojis.html">MySQL y los emojis</a>
+    </li>
+    
+    <li>
+      <span>15 May 2020 &raquo;</span> <a href="/mysql-timeouts.html">MySQL y los Timeouts</a>
+    </li>
+    
+    <li>
+      <span>12 Jun 2016 &raquo;</span> <a href="/teorema-cap.html">El teorema CAP</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      <div class="footer">
+        <div class="disclaimer">
+  
+  <p>
+    © DeBeAndo, 2020
+  </p>
+</div>
+      </div>
+    </div>
+  </div>
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17220206-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+</body>
+</html>
