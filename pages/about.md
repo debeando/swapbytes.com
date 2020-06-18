@@ -1,9 +1,13 @@
 ---
 layout: default
-title: Sobre DeBeAndo
+title: About
+permalink: /about/
+isNavItem: true
 ---
 
-Un simple sitio donde ir colocando apuntes relevantes de interés público sobre base de datos.
+# Sobre DeBeAndo
+
+Un simple sitio donde ir colocando notas relevantes de interés público sobre base de datos.
 
 ## Lemas
 

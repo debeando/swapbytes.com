@@ -1,7 +1,10 @@
 ---
 layout: default
-title: Términos de bases de datos
+title: Diccionario
+isNavItem: true
 ---
+
+# Diccionario de base de datos
 
 En el mundo de base de datos existe una gran variedad de términos técnicos que deberiamos estar familiarizados:
 
