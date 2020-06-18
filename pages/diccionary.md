@@ -7,11 +7,12 @@ isNavItem: true
 
 # Diccionario de base de datos
 
-En el mundo de base de datos existe una gran variedad de términos técnicos que deberiamos estar familiarizados:
+En el mundo de base de datos existe una gran variedad de términos técnicos que deberíamos estar familiarizados:
 
 - **Asincrono:** Es la comunicación más rápida. Quien envía al receptor no espera y continúa con su ejecución inmediatamente.
 - **Atómico:** Es uno de los términos que conforma el acronimo del ACID. Hace referencia a todo o nada de una transacción. Como una transacción puede estar conformada por varios pasos, para garantizar la Integridad, hay mecanismos de controles internos que permiten aplicar un cambio sino hay interrupciones en el flujo.
 - **CatchUp:** Acción que realiza un slave para actualizarse y tener el lag a cero.
+- **co-masters:** Hace referencia a otro master del mismo cluster.
 - **Contención:** Hace referencia a la acción producida por el bloqueo. Esto ocurre cuando multiples procesos intentan acceder al mismo recurso simultaneamente y se encuentra bloqueado por otro proceso, y así se apilan los procesos. Esto es debido a que el tiempo de espera para liberar el recurso es muy prolongado.
 - **Crawler:** Son aquellos servicios que se encargan de ir extrayendo los datos constantemente para luego ser procesados por otros servicios.
 - **DDL:** is Data Definition Language : it is used to define data structures.
@@ -19,6 +20,7 @@ En el mundo de base de datos existe una gran variedad de términos técnicos que
 - **Fetcher:** Es un crawler.
 - **Field:** Campo, columna, atributo.
 - **Latencia:** quiere decir que no hay retraso Which means that there is no lag when the write operations are being written to the disk.
+- **MPM:** Éste es un término creado por @debeando para hacer referencia a los diferentes fork de MySQL, Percona y MariaDB.
 - **Row:** Tupla, record, registro
 - **Sincrono:** Quien envía permanece bloqueado esperando a que llegue una respuesta del receptor antes de realizar cualquier otra tarea. Se puede decir que la realización estándar de MySQL es síncrona. Cuando hay escrituras paralelas, se aplican de forma paralela en todos los nodos, mientras en la realización estándar de MySQL es una a la ves.
 - **SPoF:** Single Point of Failure.
