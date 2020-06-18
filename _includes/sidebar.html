@@ -6,12 +6,4 @@
   <div id="social">
     {% include social.html %}
   </div>
-  <div id="">
-    {% for p in site.pages %}{% if p.isNavItem %}
-    <ul>
-    <a href="{{ p.url }}">{{ p.title }}</a>
-    </ul>
-    {% endif %}
-    {% endfor %}
-  </div>
 </nav>

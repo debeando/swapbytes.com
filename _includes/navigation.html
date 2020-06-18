@@ -1,0 +1,6 @@
+{% for p in site.pages %}{% if p.isNavItem %}
+<ul>
+<a href="{{ p.url }}">{{ p.title }}</a>
+</ul>
+{% endif %}
+{% endfor %}

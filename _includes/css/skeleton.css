@@ -67,6 +67,7 @@
     .container .offset-by-fourteen              { padding-left: 840px; }
     .container .offset-by-fifteen               { padding-left: 900px; }
 
+    .container .right                           { text-align: right; }
 
 
 /* #Tablet (Portrait)

@@ -403,6 +403,7 @@
     .container .offset-by-fourteen              { padding-left: 840px; }
     .container .offset-by-fifteen               { padding-left: 900px; }
 
+    .container .right                           { text-align: right; }
 
 
 /* #Tablet (Portrait)
@@ -839,6 +840,22 @@ sup {
   vertical-align: super;
   font-size: smaller;
 }
+
+.navigation {
+  padding-top: 30px;
+  border-left: 1px solid #DDD;
+}
+
+.navigation ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  display:inline;
+  padding-left:3px;
+  padding-right:3px;
+}
+
 
 /*
 * Skeleton V1.1
