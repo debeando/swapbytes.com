@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Diccionario
+permalink: /diccionario/
 isNavItem: true
 ---
 
@@ -16,7 +17,10 @@ En el mundo de base de datos existe una gran variedad de términos técnicos que
 - **DDL:** is Data Definition Language : it is used to define data structures.
 - **DML:** is Data Manipulation Language : it is used to manipulate data itself.
 - **Fetcher:** Es un crawler.
-- **Latencia:** quiere decir que no hay retrazo Which means that there is no lag when the write operations are being written to the disk.
-- **Transacción:** Son un conjunto de órdenes que se ejecutan en la DB formando una unidad lógica de trabajo (a esto se le llama atomicidad). transacciones no finalicen en un estado intermedio.
-- **Tupla:** Es el termino usado para referirse a un registro de una tabla, dicho termino se utiliza en el lenguaje de base de datos relacional, difiere del termino usado como Row porque es un termino de lexico del SQL.
+- **Field:** Campo, columna, atributo.
+- **Latencia:** quiere decir que no hay retraso Which means that there is no lag when the write operations are being written to the disk.
+- **Row:** Tupla, record, registro
 - **Sincrono:** Quien envía permanece bloqueado esperando a que llegue una respuesta del receptor antes de realizar cualquier otra tarea. Se puede decir que la realización estándar de MySQL es síncrona. Cuando hay escrituras paralelas, se aplican de forma paralela en todos los nodos, mientras en la realización estándar de MySQL es una a la ves.
+- **SPoF:** Single Point of Failure.
+- **Transacción:** Son un conjunto de órdenes que se ejecutan en la DB formando una unidad lógica de trabajo (a esto se le llama atomicidad). transacciones no finalicen en un estado intermedio.
+- **[Tupla](#tupla):** Es el termino usado para referirse a un registro de una tabla, dicho termino se utiliza en el lenguaje de base de datos relacional, difiere del termino usado como Row porque es un termino de lexico del SQL.
