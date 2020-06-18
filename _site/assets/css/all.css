@@ -113,7 +113,7 @@
 	ol ol, ol ul { margin: 4px 0 5px 30px; font-size: 90%;  }
 	ul ul li, ul ol li,
 	ol ol li, ol ul li { margin-bottom: 6px; }
-	li { line-height: 18px; margin-bottom: 12px; }
+	li { line-height: 22px; margin-bottom: 6px; }
 	ul.large li { line-height: 21px; }
 	li p { line-height: 21px; }
 
@@ -584,7 +584,7 @@ body {
   font-size: 16px;
   background-color: white;
   color: #222222;
-  line-height: 24px;
+  line-height: 22px;
   margin: 0;
   border-top: 7px solid #3498db;
 }
@@ -731,7 +731,7 @@ nav h1, nav h2 {
 }
 
 .content {
-  font: 400 16px/22px "open sans", sans-serif;
+  font: 400 16px "open sans", sans-serif;
   border-left: 1px solid #DDD;
   padding-left: 40px;
   padding-top: 25px;

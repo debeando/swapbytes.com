@@ -10,7 +10,7 @@ isNavItem: true
 En el mundo de base de datos existe una gran variedad de términos técnicos que deberíamos estar familiarizados:
 
 - **Asincrono:** Es la comunicación más rápida. Quien envía al receptor no espera y continúa con su ejecución inmediatamente.
-- **Atómico:** Es uno de los términos que conforma el acronimo del ACID. Hace referencia a todo o nada de una transacción. Como una transacción puede estar conformada por varios pasos, para garantizar la Integridad, hay mecanismos de controles internos que permiten aplicar un cambio sino hay interrupciones en el flujo.
+- **Atómico:** Es uno de los términos que conforma el acrónimo del ACID. Hace referencia a todo o nada de una transacción. Como una transacción puede estar conformada por varios pasos, para garantizar la Integridad, hay mecanismos de controles internos que permiten aplicar un cambio sino hay interrupciones en el flujo.
 - **CatchUp:** Acción que realiza un slave para actualizarse y tener el lag a cero.
 - **co-masters:** Hace referencia a otro master del mismo cluster.
 - **Contención:** Hace referencia a la acción producida por el bloqueo. Esto ocurre cuando multiples procesos intentan acceder al mismo recurso simultaneamente y se encuentra bloqueado por otro proceso, y así se apilan los procesos. Esto es debido a que el tiempo de espera para liberar el recurso es muy prolongado.
