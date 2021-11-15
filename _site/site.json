@@ -1,13 +1,19 @@
 ---
 [
 
-{"date": "Fri, 15 May 2020 00:00:00 -0500",
+{"date": "Sat, 27 Jun 2020 00:00:00 -0500",
+"categories": ["database"],
+"tags": ["mysql","mariadb","percona","codigo","agnostico","base de datos"],
+"title": "El mito del 'código debe ser agnóstico a la base de datos'",
+"url": "/mito-codigo-agnostico-base-datos.html"},
+
+{"date": "Mon, 18 May 2020 00:00:00 -0500",
 "categories": ["MySQL"],
 "tags": ["mysql","collation"],
 "title": "MySQL y los emojis",
 "url": "/mysql-emojis.html"},
 
-{"date": "Fri, 15 May 2020 00:00:00 -0500",
+{"date": "Sat, 16 May 2020 00:00:00 -0500",
 "categories": ["MySQL"],
 "tags": ["mysql","timeout"],
 "title": "MySQL y los Timeouts",
