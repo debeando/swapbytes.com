@@ -17,6 +17,7 @@ Cualquier material que sirva de inspiración, conocimiento que sea relevante.
 - [Database Internals: A Deep-Dive Into How Distributed Data Systems Work](https://www.amazon.es/Database-Internals-deep-dive-distributed-systems/dp/1492040347)
 - [Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems](https://www.amazon.es/Designing-Data-Intensive-Applications-Reliable-Maintainable/dp/1449373321)
 - [Databases at Scale: Operations Engineering: Designing and Operating Resilient Database Systems](https://www.amazon.es/Databases-at-Scale-Operations-Engineering/dp/1491925949)
+- [Database Reliability Engineering](https://www.amazon.es/Database-Reliability-Engineering-Designing-Operating-ebook/dp/B076VXPXND)
 - [The Unicorn Project: A Novel about Developers, Digital Disruption, and Thriving in the Age of Data](https://www.amazon.es/Unicorn-Project-Developers-Disruption-Thriving/dp/1942788762)
 
 ### Ciencia Ficción
