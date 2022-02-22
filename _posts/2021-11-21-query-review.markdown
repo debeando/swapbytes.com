@@ -3,7 +3,7 @@ layout: post
 title:  "Query review"
 date:   2020-06-27
 categories: database
-published: false
+published: true
 tags: [base de datos]
 ---
 
