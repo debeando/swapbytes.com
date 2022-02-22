@@ -5,7 +5,7 @@ permalink: /cultura/
 isNavItem: true
 ---
 
-# Cultura Informática 
+# Cultura Informática
 
 Cualquier material que sirva de inspiración, conocimiento que sea relevante.
 
@@ -19,6 +19,7 @@ Cualquier material que sirva de inspiración, conocimiento que sea relevante.
 - [Databases at Scale: Operations Engineering: Designing and Operating Resilient Database Systems](https://www.amazon.es/Databases-at-Scale-Operations-Engineering/dp/1491925949)
 - [Database Reliability Engineering](https://www.amazon.es/Database-Reliability-Engineering-Designing-Operating-ebook/dp/B076VXPXND)
 - [The Unicorn Project: A Novel about Developers, Digital Disruption, and Thriving in the Age of Data](https://www.amazon.es/Unicorn-Project-Developers-Disruption-Thriving/dp/1942788762)
+- [Hábitos atómicos: Cambios pequeños, resultados extraordinarios (Autoconocimiento)](https://www.amazon.es/H%C3%A1bitos-at%C3%B3micos-Autoconocimiento-James-Clear/dp/8418118032)
 
 ### Ciencia Ficción
 
@@ -28,12 +29,14 @@ Cualquier material que sirva de inspiración, conocimiento que sea relevante.
 - [La vieja guardia](https://www.amazon.es/vieja-guardia-Ciencia-Ficci%C3%B3n/dp/844500008X)
 - [Neuromante](https://www.amazon.es/Neuromante-n%C2%BA-01-Minotauro-Esenciales-ebook/dp/B08W2HQ83Y)
 
-## Series de televisión
+## Cine y Series
+
+### Series de televisión
 
 - [The IT Crowd](https://www.imdb.com/title/tt0487831)
 - [Halt and Catch Fire](https://www.imdb.com/title/tt2543312)
 - [The Billion Dollar Code](https://www.imdb.com/title/tt15392100)
 
-## Películas
+### Películas
 
 - [Antitrust](https://www.imdb.com/title/tt0218817)
