@@ -7,7 +7,7 @@ isNavItem: true
 
 # Cultura Informática
 
-Cualquier material que sirva de inspiración, conocimiento que sea relevante.
+Cualquier material que sirva de inspiración y/o conocimiento que sea relevante.
 
 ## Libros
 
@@ -29,14 +29,16 @@ Cualquier material que sirva de inspiración, conocimiento que sea relevante.
 - [La vieja guardia](https://www.amazon.es/vieja-guardia-Ciencia-Ficci%C3%B3n/dp/844500008X)
 - [Neuromante](https://www.amazon.es/Neuromante-n%C2%BA-01-Minotauro-Esenciales-ebook/dp/B08W2HQ83Y)
 
-## Cine y Series
+## Películas y Series
+
+### Películas
+
+- [Antitrust](https://www.imdb.com/title/tt0218817)
+- [Hackers](https://www.imdb.com/title/tt0113243)
+- [Takedown](https://www.imdb.com/title/tt0159784)
 
 ### Series de televisión
 
 - [The IT Crowd](https://www.imdb.com/title/tt0487831)
 - [Halt and Catch Fire](https://www.imdb.com/title/tt2543312)
 - [The Billion Dollar Code](https://www.imdb.com/title/tt15392100)
-
-### Películas
-
-- [Antitrust](https://www.imdb.com/title/tt0218817)
