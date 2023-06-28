@@ -36,6 +36,8 @@ Cualquier material que sirva de inspiración y/o conocimiento que sea relevante.
 - [Antitrust](https://www.imdb.com/title/tt0218817)
 - [Hackers](https://www.imdb.com/title/tt0113243)
 - [Takedown](https://www.imdb.com/title/tt0159784)
+- [Dark City](https://www.imdb.com/title/tt0118929)
+- [The Thirteenth Floor](https://www.imdb.com/title/tt0139809)
 
 ### Series de televisión
 
