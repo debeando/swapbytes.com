@@ -45,8 +45,8 @@ En este caso hay que probar siempre muy bien la nueva versión de la librería a
 
 Para poder hallar con el problema hay que investigar un poco por todos lados, aquí dejo varios tips:
 
-* Lo más importante, leer el mensaje de error y analizarlo. No llamar impulsivamente al DBA para que lo lea por ti, google es tu amigo.
+* Lo más importante, leer el mensaje de error y analizarlo. No llamar impulsivamente al DBA para que lo lea por ti, Google ó ChatGPT es tu amigo.
 * Revisar si ha habido algún cambio de driver y configuración.
-* Si es un problema de conexión, es bueno ver los logs para hallar con alguna pista.
+* Si es un problema de conexión, es bueno ver los logs para encontrar alguna pista.
 
 Suerte!
