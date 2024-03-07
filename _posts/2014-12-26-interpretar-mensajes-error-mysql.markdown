@@ -25,11 +25,11 @@ ERROR 2006: MySQL server connection closed
 ERROR 1709 (HY000): Index column size too large.
 ```
 
-Los mensajes de error se dividen en dos grandes grupos, los que se producen del lado del **servidor** y los del lado del **cliente**. Para conocer un poco más que significa cada código de error, existe una aplicación llamada [perror](http://dev.mysql.com/doc/refman/5.6/en/perror.html).
+Los mensajes de error se dividen en dos grandes grupos, los que se producen del lado del **servidor** y los del lado del **cliente**. Para conocer un poco más que significa cada código de error, existe una aplicación llamada [perror](https://dev.mysql.com/doc/refman/8.0/en/perror.html).
 
 ### Errores del lado del Servidor
 
-Aquí se presentan todos aquellos [errores del lado del servidor](http://dev.mysql.com/doc/refman/5.6/en/error-messages-server.html) que **tienen que  ver en su mayoría con problemas de lógica o sintaxis del SQL, o alguna violación de un constraint.** Todos estos los identificamos porque su código de error están entre el número 1000 y 1999.
+Aquí se presentan todos aquellos [errores del lado del servidor](https://dev.mysql.com/doc/mysql-errors/8.0/en/server-error-reference.html) que **tienen que  ver en su mayoría con problemas de lógica o sintaxis del SQL, o alguna violación de un constraint.** Todos estos los identificamos porque su código de error están entre el número 1000 y 1999.
 
 Cuando se genera este tipo de error en MySQL, el servidor envía el código y el mensaje al cliente. Es importante destacar que NO hay forma de ocultar estos errores.
 
@@ -37,7 +37,7 @@ En caso de ser una excepción por alguna validación del constraint, se recomien
 
 ### Errores del lado del Cliente
 
-Las aplicaciones o drivers que se utilizan para conectarse a MySQL necesitan de la librería [Connector de MySQL](http://dev.mysql.com/downloads/connector/c/), en ella existe una definición de los [mensajes de Error](http://dev.mysql.com/doc/refman/5.6/en/error-messages-client.html), el siguiente enlace es la librería del lenguaje C. Podemos examinar el código fuente para ir aprendiendo un poco de como funcionan.
+Las aplicaciones o drivers que se utilizan para conectarse a MySQL necesitan de la librería [Connector de MySQL](http://dev.mysql.com/downloads/connector/c/), en ella existe una definición de los [mensajes de Error](https://dev.mysql.com/doc/mysql-errors/8.0/en/client-error-reference.html), el siguiente enlace es la librería del lenguaje C. Podemos examinar el código fuente para ir aprendiendo un poco de como funcionan.
 
 Están por encima del valor de 2000. Por ahora no son más de 70 errores, y **tienen que ver con problemas de conexión**. La librería Connector se encarga de ponerle un mensaje al código de error.
 
