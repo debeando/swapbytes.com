@@ -22,7 +22,7 @@ Aquí listo algunos ejemplos reales:
 ERROR 1040: Too many connections
 ERROR 1146 (42S02): Table 'test.no_such_table' doesn't exist
 ERROR 2006: MySQL server connection closed
-ERROR 1709 (HY000): Index column size too large. The maximum column size is 767 bytes.
+ERROR 1709 (HY000): Index column size too large.
 ```
 
 Los mensajes de error se dividen en dos grandes grupos, los que se producen del lado del **servidor** y los del lado del **cliente**. Para conocer un poco más que significa cada código de error, existe una aplicación llamada [perror](http://dev.mysql.com/doc/refman/5.6/en/perror.html).
