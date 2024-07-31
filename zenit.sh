@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Apache License Version 2.0, January 2004
-# https://github.com/swapbyt3s/zenit/blob/master/LICENSE.md
+# https://github.com/debeando/zenit/blob/master/LICENSE.md
 
 set -e
 
