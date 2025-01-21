@@ -11,7 +11,7 @@ En algún momento MySQL decide bloquear una IP por haber tenido problemas con la
 
 ![DBA]({{ "/assets/incident20250120_02.png" | absolute_url }})
 
-Podemos apreciar que hay un pico en el contador `Connection_errors_max_connections` (Rojo), luego empieza una secuencia de `Aborted_connects` (Amarillo) hasta que termia al hacer un `FLUSH HOSTS` y se modifica la variable `max_connect_errors` (Violeta) para aumentar la tolerancia. Se destaca que la linea Roja supera a la Violeta y la Amarilla indica el acceso al denegado host.
+En la gráfica se puede apreciar una secuencia ideal, hay un pico en el contador `Connection_errors_max_connections` (Rojo), luego empieza una secuencia de `Aborted_connects` (Amarillo) hasta que termia al hacer un `FLUSH HOSTS` y se modifica la variable `max_connect_errors` (Violeta) para aumentar la tolerancia. Se destaca que la linea Roja supera a la Violeta y la Amarilla indica el acceso al denegado host.
 
 Para revisar el contador de conexiones fallidas:
 
