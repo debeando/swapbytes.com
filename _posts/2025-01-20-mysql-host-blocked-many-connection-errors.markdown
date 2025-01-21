@@ -40,36 +40,38 @@ MySQL tiene un mecanismo de protección para las conexiones que se malforman del
 
 Es normal que pase una vez al año con uso medio.
 
-## Solución #1:
+## Solución inmediata:
 
-Ejecutar el siguiente comando para versiones inferiores a MySQL 8:
+La solución que se describe a continuación es de tipo reactiva, ideal para una situación de intervención ante una incidencia.
+
+Ejecutar el siguiente comando para versiones inferiores a MySQL 8.0:
 
 ```sql
 FLUSH HOSTS;
 ```
 
-Para versiones de MySQL 8 en adelante se ejecuta el siguiente comando:
+Ejecuta el siguiente comando para la version de MySQL 8.0 en adelante:
 
 ```sql
 TRUNCATE TABLE performance_schema.host_cache;
 ```
 
-## Solución #2:
+## Solución preventiva:
 
-La siguiente forma es automatizar el proceso indicado en la Solución #1, de esta forma es más de uso preventivo y aprovecha las características propias de MySQL.
+La siguiente forma es automatizar el proceso indicado en la solución anterior, de esta forma es más de uso preventivo y aprovecha las características propias de MySQL.
 
-Primero deberá incrementar el valor de la variable `max_connect_errors` a un valor muy alto, por ejemplo 1000000, con el fin de crear un umbral de tolerancia entre la ejecución del evento `mysql.ev_flush_hosts`.
+Primero deberá incrementar el valor de la variable `max_connect_errors` a un valor muy alto, por defecto es 100, y la incrementamos a 1000000, con el fin de crear un umbral de tolerancia entre la ejecución del evento `mysql.ev_flush_hosts`.
 
 Luego deberá crear un evento, el cual es la versión de un cronjob dentro del servicio de MySQL, con el fin de ejecutar el comando cada cierto tiempo.
 
 ```sql
 CREATE EVENT mysql.ev_flush_hosts ON
-SCHEDULE EVERY 24 HOUR STARTS '2024-06-20 12:27:57' ON
+SCHEDULE EVERY 24 HOUR STARTS '2024-01-01 00:00:00' ON
 COMPLETION NOT PRESERVE ENABLE DO
 TRUNCATE TABLE performance_schema.host_cache;
 ```
 
-Para este ejemplo se crea el evento dentro de la base de datos MySQL, no hay un criterio definido para esta medida.
+Para este ejemplo se crea el evento dentro de la base de datos MySQL, no hay un criterio definido si es correcto o no, si tiene dudas cree su propia base de datos `dba` y cree allí su evento.
 
 Se puede ajustar el intervalo de ejecución del evento `mysql.ev_flush_hosts` para ir reduciendo los tiempos y controlar la incidencia.
 
