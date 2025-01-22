@@ -46,6 +46,12 @@ En MySQL 5.6 en adelante puedes obtener información básica de los host's bloqu
 SELECT * FROM performance_schema.host_cache;
 ```
 
+El log de errores lo puedes revisar de la siguiente forma:
+
+```sql
+SELECT * FROM performance_schema.error_log;
+```
+
 Es normal que pase una vez al año con uso medio.
 
 ## Solución inmediata:
