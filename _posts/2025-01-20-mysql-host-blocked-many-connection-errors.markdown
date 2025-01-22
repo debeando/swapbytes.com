@@ -7,7 +7,9 @@ published: true
 tags: [mysql, base de datos]
 ---
 
-En algún momento MySQL decide bloquear una IP por haber tenido problemas con las conexiones provenientes de dicho host. En la siguiente gráfica se puede apreciar una situación de ejemplo: 
+En algún momento MySQL decide bloquear una IP por haber tenido problemas con las conexiones provenientes de dicho host. Te explico una forma simple, nativa, rápida y eficiente de controlar esta situación sin hacer sobre ingeniería.
+
+En la siguiente gráfica se puede apreciar un ejemplo:
 
 ![DBA]({{ "/assets/incident20250120_02.png" | absolute_url }})
 
