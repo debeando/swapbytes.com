@@ -46,6 +46,8 @@ En MySQL 5.6 en adelante puedes obtener información básica de los host's bloqu
 SELECT * FROM performance_schema.host_cache;
 ```
 
+Para conocer un poco más de la tabla [host_cache](https://dev.mysql.com/doc/refman/8.0/en/host-cache.html), consulta la documentación.
+
 El log de errores lo puedes revisar de la siguiente forma:
 
 ```sql
