@@ -28,7 +28,7 @@ Y la variable [max_connect_errors](https://dev.mysql.com/doc/refman/8.0/en/serve
 SHOW GLOBAL VARIABLES LIKE 'max_connect_errors';
 ```
 
-Para tener detalles de los errores de conexión a futuro, se debe modificar:
+Para tener detalles de los errores de conexión a futuro, se debe modificar la variable [log_error_verbosity](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_log_error_verbosity) con el siguiente valor a tres:
 
 ```bash
 log_error_verbosity = 3
