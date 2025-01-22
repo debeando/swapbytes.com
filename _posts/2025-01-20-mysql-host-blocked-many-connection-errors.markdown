@@ -38,7 +38,13 @@ Considere que este nivel de verbosity es para uso temporal con el fin de detecta
 
 ## Causas:
 
-MySQL tiene un mecanismo de protección para las conexiones que se malforman del lado del cliente, al detectarlas bloquea la IP, para tener más detalles debe hacer uso de la variable `log_error_verbosity`.
+MySQL tiene un mecanismo de protección para las conexiones que se malforman del lado del cliente, o problemas de red. Al detectarlas se bloquea la IP, para tener más detalles debe hacer uso de la variable `log_error_verbosity` y verificar el `error_log`.
+
+En MySQL 5.6 en adelante puedes obtener información básica de los host's bloqueados haciendo la siguiente consulta:
+
+```sql
+SELECT * FROM performance_schema.host_cache;
+```
 
 Es normal que pase una vez al año con uso medio.
 
@@ -56,6 +62,12 @@ Ejecuta el siguiente comando para la version de MySQL 8.0 en adelante:
 
 ```sql
 TRUNCATE TABLE performance_schema.host_cache;
+```
+
+También puedes usar el comando `mysqladmin` de la siguiente forma:
+
+```bash
+mysqladmin -h <HOST> -P <PORT> -u <USER> -p flush-hosts
 ```
 
 ## Solución preventiva:
@@ -76,6 +88,8 @@ TRUNCATE TABLE performance_schema.host_cache;
 Para este ejemplo se crea el evento dentro de la base de datos MySQL, no hay un criterio definido si es correcto o no, si tiene dudas cree su propia base de datos `dba` y cree allí su evento.
 
 Se puede ajustar el intervalo de ejecución del evento `mysql.ev_flush_hosts` para ir reduciendo los tiempos y controlar la incidencia.
+
+No te preocupes que el evento y el comando no supone ningún peligro.
 
 Por último, debera verificar si los eventos estan activos (el valor debe estar en ON) y en su defecto activarlos:
 
