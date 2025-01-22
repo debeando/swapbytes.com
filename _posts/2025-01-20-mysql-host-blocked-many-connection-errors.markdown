@@ -7,13 +7,13 @@ published: true
 tags: [mysql, base de datos]
 ---
 
-En algún momento MySQL decide bloquear una IP por haber tenido problemas con las conexiones provenientes de dicho host. Te explico una forma simple, nativa, rápida y eficiente de controlar esta situación sin hacer sobre ingeniería.
+En algún momento MySQL decide bloquear una IP por haber tenido problemas con las conexiones provenientes de un host. Te explico una forma simple, nativa, rápida y eficiente de controlar esta situación sin hacer sobre ingeniería.
 
 En la siguiente gráfica se puede apreciar un ejemplo:
 
 ![DBA]({{ "/assets/incident20250120_02.png" | absolute_url }})
 
-En la gráfica se puede apreciar una secuencia ideal, hay un pico en el contador `Connection_errors_max_connections` (Rojo), luego empieza una secuencia de `Aborted_connects` (Amarillo) hasta que termia al hacer un `FLUSH HOSTS` y se modifica la variable `max_connect_errors` (Violeta) para aumentar la tolerancia. Se destaca que la linea Roja supera a la Violeta y la Amarilla indica el acceso al denegado host.
+En la gráfica se puede apreciar una secuencia ideal del problema, hay un pico en el contador [Connection_errors_max_connections](https://dev.mysql.com/doc/refman/8.0/en/server-status-variables.html#statvar_Connection_errors_max_connections) (Rojo), a partir de allí empieza una secuencia de [Aborted_connects](https://dev.mysql.com/doc/refman/8.0/en/server-status-variables.html#statvar_Aborted_connects) (Amarillo) hasta que termia al hacer un `FLUSH HOSTS` y se modifica la variable [max_connect_errors](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_connect_errors) (Violeta) para aumentar la tolerancia. Se destaca que la linea Roja supera a la Violeta y la Amarilla indica acceso denegado al host.
 
 Para revisar el contador de conexiones fallidas:
 
@@ -22,7 +22,7 @@ SHOW GLOBAL STATUS LIKE 'Connection_errors_max_connections';
 SHOW GLOBAL STATUS LIKE 'Aborted_connects';
 ```
 
-Y la variable que define el número máximo de conexiones fallidas que al superarla bloquea la IP del cliente.
+Y la variable [max_connect_errors](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_connect_errors) que define el número máximo de conexiones fallidas para bloquear la IP del host.
 
 ```sql
 SHOW GLOBAL VARIABLES LIKE 'max_connect_errors';
