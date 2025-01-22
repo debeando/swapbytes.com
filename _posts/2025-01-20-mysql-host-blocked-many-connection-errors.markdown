@@ -83,4 +83,4 @@ Por último, debera verificar si los eventos estan activos (el valor debe estar 
 SHOW GLOBAL VARIABLES LIKE 'event_scheduler';
 ```
 
-De esta forma, ya tiene un mecanismo automático y preventivo para este error.
+De esta forma, ya tienes un mecanismo automático y preventivo para controlar este tipo de error.
